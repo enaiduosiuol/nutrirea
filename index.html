@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark"> <head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <style>
+    /* ========================================= */
+    /* STYLE GLOBAL (DARK MODE iOS)              */
+    /* ========================================= */
+    body {
+      background-color: #000000; /* Vrai noir iOS */
+      color: #ffffff;
+      font-family: '-apple-system', 'SF Pro Display', 'SF Pro Text', sans-serif;
+      padding-bottom: calc(120px + env(safe-area-inset-bottom));
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* ========================================= */
+    /* EN-TÊTE (Large Title)                     */
+    /* ========================================= */
+    .ios-header {
+      padding: calc(20px + env(safe-area-inset-top)) 20px 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .ios-title {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin: 0;
+    }
+    .ios-subtitle {
+      color: #8e8e93;
+      font-weight: 600;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    .btn-reset {
+      background: #1c1c1e;
+      color: #0a84ff; /* Bleu iOS */
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      height: fit-content;
+      margin-bottom: 5px;
+    }
+    .btn-reset:active { background: #2c2c2e; opacity: 0.8; }
+    
+    /* ========================================= */
+    /* CARTES TYPE "APPLE ARCADE"                */
+    /* ========================================= */
+    .ios-card {
+      background-color: #1c1c1e; /* Gris foncé iOS */
+      border-radius: 24px;
+      padding: 20px;
+      margin: 0 20px 20px 20px;
+    }
+    /* Dégradés spécifiques pour les résultats */
+    .card-gradient-ne { background: linear-gradient(145deg, #10243e 0%, #0a1120 100%); border: 1px solid rgba(10, 132, 255, 0.2); }
+    .card-gradient-np { background: linear-gradient(145deg, #133324 0%, #081610 100%); border: 1px solid rgba(48, 209, 88, 0.2); }
+    .card-gradient-warn { background: linear-gradient(145deg, #3a250b 0%, #1a1003 100%); border: 1px solid rgba(255, 159, 10, 0.2); }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title svg { color: #8e8e93; }
+
+    /* ========================================= */
+    /* FORMULAIRES ET ÉLÉMENTS                   */
+    /* ========================================= */
+    .form-control, .form-select {
+      background-color: #2c2c2e !important; /* Un peu plus clair que la carte */
+      color: white !important;
+      border: none !important;
+      border-radius: 12px !important;
+      min-height: 44px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .form-control:focus, .form-select:focus { box-shadow: 0 0 0 2px #0a84ff !important; }
+    .label-small { font-size: 0.8rem; font-weight: 600; color: #8e8e93; margin-bottom: 6px; display: block; }
+    
+    /* Grille anthropométrie */
+    .anthro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-top: 15px; }
+    .anthro-box { background: #2c2c2e; border-radius: 12px; padding: 10px 5px; }
+    .anthro-val { font-size: 1.1rem; font-weight: 700; color: #0a84ff; display: block; margin-top: 4px; }
+    .anthro-label { font-size: 0.65rem; color: #8e8e93; font-weight: 600; text-transform: uppercase; }
+
+    /* Mise en valeur des gros chiffres */
+    .highlight-value { font-size: 2.5rem; font-weight: 800; color: #ffffff; line-height: 1; margin: 10px 0; }
+    .highlight-unit { font-size: 1rem; font-weight: 600; color: #8e8e93; }
+    .text-primary-ios { color: #0a84ff !important; }
+    .text-success-ios { color: #30d158 !important; }
+    .text-warning-ios { color: #ff9f0a !important; }
+
+    /* Poche Info Grid */
+    .carac-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; text-align: center; }
+    .carac-box { background: #2c2c2e; border-radius: 12px; padding: 10px; }
+    .carac-label { display: block; font-size: 0.7rem; color: #8e8e93; font-weight: 600; margin-bottom: 2px; }
+    .carac-val { font-weight: 800; color: #ffffff; font-size: 1rem; }
+
+    /* Progress bars */
+    .progress { background-color: #2c2c2e; border-radius: 8px; height: 10px; overflow: hidden; }
+    .progress-bar { border-radius: 8px; }
+    .bg-primary-ios { background-color: #0a84ff !important; }
+    .bg-success-ios { background-color: #30d158 !important; }
+
+    /* Range Slider */
+    input[type=range] { accent-color: #0a84ff; }
+
+    /* ========================================= */
+    /* BARRE D'ONGLETS FLOTTANTE iOS (DARK)      */
+    /* ========================================= */
+    .ios-floating-bar {
+      position: fixed;
+      bottom: calc(15px + env(safe-area-inset-bottom));
+      left: 20px;
+      right: 20px;
+      background-color: rgba(30, 30, 30, 0.75);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-radius: 40px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px;
+      z-index: 1000;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .ios-floating-bar .nav-item { flex: 1; display: flex; justify-content: center; }
+    .ios-floating-bar .nav-link {
+      border: none !important; background: transparent !important;
+      color: #8e8e93; font-size: 0.65rem; font-weight: 600;
+      display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0;
+    }
+    .ios-floating-bar .icon-wrapper {
+      width: 54px; height: 32px; display: flex; align-items: center; justify-content: center;
+      border-radius: 16px; transition: all 0.2s ease; color: #8e8e93;
+    }
+    .ios-floating-bar .nav-link.active { color: #ffffff; }
+    .ios-floating-bar .nav-link.active .icon-wrapper { background-color: rgba(255,255,255,0.15); color: #ffffff; }
+    .ios-floating-bar svg { width: 22px; height: 22px; }
+
+    /* Cacher des onglets natifs bootstrap */
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; animation: fadeIn 0.3s; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+  <div class="ios-header">
+    <div>
+      <h1 class="ios-title">Nutrition</h1>
+      <div class="ios-subtitle">Réanimation & Soins Intensifs</div>
+    </div>
+    <button type="button" class="btn-reset" onclick="reinitialiserApp()">Effacer</button>
+  </div>
+
+  <div class="ios-card">
+    <div class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      Patient
+    </div>
+    <input type="text" class="form-control mb-3" id="nomPatient" placeholder="Identifiant (Nom/IPP)">
+    <div class="row g-2">
+      <div class="col-6">
+        <label class="label-small">Poids (kg)</label>
+        <input type="number" class="form-control text-center" id="poidsReel" value="70" oninput="calculerTout()" inputmode="decimal">
+      </div>
+      <div class="col-6">
+        <label class="label-small">Taille (cm)</label>
+        <input type="number" class="form-control text-center" id="taille" value="170" oninput="calculerTout()" inputmode="decimal">
+      </div>
+    </div>
+    <div class="anthro-grid">
+      <div class="anthro-box">
+        <span class="anthro-label">IMC</span>
+        <span class="anthro-val" id="resIMC">--</span>
+      </div>
+      <div class="anthro-box">
+        <span class="anthro-label">Idéal</span>
+        <span class="anthro-val" id="resPI">--</span>
+      </div>
+      <div class="anthro-box">
+        <span class="anthro-label">Ajusté</span>
+        <span class="anthro-val" id="resPA">--</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="myTabContent">
+    
+    <div class="tab-pane active" id="enteral" role="tabpanel">
+      
+      <div class="ios-card">
+        <div class="section-title">Paramètres NE</div>
+        <div class="row g-3 mb-3">
+          <div class="col-6">
+            <label class="label-small">Cible (kcal/kg)</label>
+            <select id="phaseNE" class="form-select" onchange="calculerTout()">
+              <option value="20">20 kcal/kg</option>
+              <option value="25" selected>25 kcal/kg</option>
+              <option value="30">30 kcal/kg</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="label-small">Cible (g/kg)</label>
+            <select id="cibleProtNE" class="form-select" onchange="calculerTout()">
+              <optgroup label="Standard (P.Réel)">
+                <option value="1.0">1.0 g/kg</option>
+                <option value="1.5" selected>1.5 g/kg</option>
+                <option value="2.0">2.0 g/kg</option>
+              </optgroup>
+              <optgroup label="Obésité (P.Idéal)">
+                <option value="2.0">2.0 g/kg (IMC >30)</option>
+                <option value="2.5">2.5 g/kg (IMC >40)</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="label-small">Densité (kcal/mL)</label>
+            <input type="number" id="enConc" class="form-control" value="1.5" step="0.1" oninput="calculerTout()" inputmode="decimal">
+          </div>
+          <div class="col-6">
+            <label class="label-small">Protéines (g/L)</label>
+            <input type="number" id="enProt" class="form-control" value="50" oninput="calculerTout()" inputmode="decimal">
+          </div>
+        </div>
+      </div>
+
+      <div class="ios-card">
+        <div class="section-title">Apports Cachés (IV)</div>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="label-small">Propofol (mL/h)</label>
+            <div class="input-group">
+              <select id="propofolTypeNE" class="form-select" style="max-width: 100px;" onchange="calculerTout()">
+                <option value="1.1">1%</option><option value="2.2">2%</option>
+              </select>
+              <input type="number" id="propofolDebitNE" class="form-control text-center" value="0" oninput="calculerTout()" inputmode="decimal">
+            </div>
+          </div>
+          <div class="col-12">
+            <label class="label-small">Glucose (mL/24h)</label>
+            <div class="input-group">
+              <select id="glucoseTypeNE" class="form-select" style="max-width: 100px;" onchange="calculerTout()">
+                <option value="0.2">G5%</option><option value="0.4">G10%</option>
+              </select>
+              <input type="number" id="glucoseVolNE" class="form-control text-center" value="0" oninput="calculerTout()" inputmode="decimal">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ios-card card-gradient-ne text-center">
+        <div class="label-small text-uppercase mb-1" style="color: #64d2ff;">Prescription Pompe</div>
+        <div class="highlight-value text-primary-ios"><span id="resDebit">0.0</span> <span class="highlight-unit">ml/h</span></div>
+        
+        <div class="mt-4 px-2">
+          <input type="range" class="form-range" id="rangeVolNE" min="0" max="3000" step="10" oninput="updateFromSliderNE()">
+          <div class="d-flex justify-content-between mt-2" style="font-size: 0.8rem; color:#8e8e93;">
+              <span>Volume Ajusté</span>
+              <strong class="text-white"><span id="resVolTotal">0</span> ml/24h</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="ios-card">
+        <div class="section-title">Adéquation</div>
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-end mb-2">
+            <div>
+              <span class="label-small mb-0">Énergie (NE + IV)</span>
+              <span class="text-primary-ios fw-bold fs-5" id="totalProvidedKcalNE_Display">0</span> <span style="font-size:0.8rem; color:#8e8e93;">/ <span id="targetKcalNE_Display">0</span> kcal</span>
+            </div>
+            <div class="text-end" style="font-size:0.7rem; color:#ff6961;">Cachées: <span id="resCachéesNE_Synth">0</span></div>
+          </div>
+          <div class="progress"><div class="progress-bar bg-primary-ios" id="barKcalNE" style="width: 0%"></div></div>
+        </div>
+        <div>
+          <div class="d-flex justify-content-between align-items-end mb-2">
+            <div>
+              <span class="label-small mb-0">Protéines</span>
+              <span class="text-success-ios fw-bold fs-5" id="totalProvidedProtNE_Display">0</span> <span style="font-size:0.8rem; color:#8e8e93;">/ <span id="targetProtNE_Display">0</span> g</span>
+            </div>
+          </div>
+          <div class="progress"><div class="progress-bar bg-success-ios" id="barProtNE" style="width: 0%"></div></div>
+        </div>
+      </div>
+
+      <div class="ios-card card-gradient-warn text-center">
+        <div class="label-small text-uppercase" style="color:#ffd60a;">Complément Protifar</div>
+        <div class="highlight-value text-warning-ios"><span id="resProtifar">0.0</span> <span class="highlight-unit">cuillères</span></div>
+        <div style="font-size: 0.8rem; color:#8e8e93;">Déficit à combler: <span id="resDeficitProt" class="text-white fw-bold">0.0</span> g</div>
+      </div>
+
+    </div>
+
+    <div class="tab-pane" id="parenteral" role="tabpanel">
+      
+      <div class="ios-card">
+        <div class="section-title">Paramètres NP</div>
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="label-small">Cible (kcal/kg)</label>
+            <select id="phaseNP" class="form-select" onchange="calculerTout()">
+              <option value="20">20 kcal/kg</option>
+              <option value="25" selected>25 kcal/kg</option>
+              <option value="30">30 kcal/kg</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="label-small">Cible (g/kg)</label>
+            <select id="cibleProtNP" class="form-select" onchange="calculerTout()">
+              <optgroup label="Standard (P.Réel)">
+                <option value="1.0">1.0 g/kg</option>
+                <option value="1.5" selected>1.5 g/kg</option>
+                <option value="2.0">2.0 g/kg</option>
+              </optgroup>
+              <optgroup label="Obésité (P.Idéal)">
+                <option value="2.0">2.0 g/kg (IMC >30)</option>
+                <option value="2.5">2.5 g/kg (IMC >40)</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="ios-card">
+        <div class="section-title">Apports Cachés (IV)</div>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="label-small">Propofol (mL/h)</label>
+            <div class="input-group">
+              <select id="propofolTypeNP" class="form-select" style="max-width: 100px;" onchange="calculerTout()">
+                <option value="1.1">1%</option><option value="2.2">2%</option>
+              </select>
+              <input type="number" id="propofolDebitNP" class="form-control text-center" value="0" oninput="calculerTout()" inputmode="decimal">
+            </div>
+          </div>
+          <div class="col-12">
+            <label class="label-small">Glucose (mL/24h)</label>
+            <div class="input-group">
+              <select id="glucoseTypeNP" class="form-select" style="max-width: 100px;" onchange="calculerTout()">
+                <option value="0.2">G5%</option><option value="0.4">G10%</option>
+              </select>
+              <input type="number" id="glucoseVolNP" class="form-control text-center" value="0" oninput="calculerTout()" inputmode="decimal">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ios-card">
+        <div class="section-title">Choix de la Poche</div>
+        <select id="choixPoche" class="form-select fw-bold text-center mb-3" onchange="updatePoche()" style="height: 55px; font-size: 1.1rem;">
+          <option value="">-- Sélectionner --</option>
+          <optgroup label="Olimel N7 (Avec Élec)">
+            <option value="oli7_1000">Olimel N7 - 1000 mL</option>
+            <option value="oli7_1500">Olimel N7 - 1500 mL</option>
+            <option value="oli7_2000">Olimel N7 - 2000 mL</option>
+          </optgroup>
+          <optgroup label="Olimel N9 (Sans Élec)">
+            <option value="oli9_1000">Olimel N9 - 1000 mL</option>
+            <option value="oli9_1500">Olimel N9 - 1500 mL</option>
+            <option value="oli9_2000">Olimel N9 - 2000 mL</option>
+          </optgroup>
+          <optgroup label="SmofKabiven (Sans Élec)">
+            <option value="smof_986">SmofKabiven - 986 mL</option>
+            <option value="smof_1477">SmofKabiven - 1477 mL</option>
+            <option value="smof_1970">SmofKabiven - 1970 mL</option>
+          </optgroup>
+        </select>
+        
+        <div id="pocheInfo" style="display:none;">
+          <div class="carac-grid">
+             <div class="carac-box"><span class="carac-label">Volume</span><span class="carac-val" id="dispVol">--</span> <small class="text-muted">mL</small></div>
+             <div class="carac-box"><span class="carac-label">Énergie</span><span class="carac-val" id="dispKcal">--</span> <small class="text-muted">kcal</small></div>
+             <div class="carac-box"><span class="carac-label">Azote</span><span class="carac-val" id="dispAzote">--</span> <small class="text-muted">g</small></div>
+             <div class="carac-box"><span class="carac-label">Lipides</span><span class="carac-val" id="dispLipid">--</span> <small class="text-muted">g</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ios-card card-gradient-np text-center">
+        <div class="label-small text-uppercase mb-1" style="color: #30d158;">Prescription Pompe</div>
+        <div class="highlight-value text-success-ios"><span id="resDebitNP">0.0</span> <span class="highlight-unit">ml/h</span></div>
+        
+        <div class="mt-4 px-2">
+          <input type="range" class="form-range" id="rangeVolNP" min="0" max="3000" step="10" oninput="updateFromSliderNP()">
+          <div class="d-flex justify-content-between mt-2" style="font-size: 0.8rem; color:#8e8e93;">
+              <span>Volume Ajusté</span>
+              <strong class="text-white"><span id="resVolTotalNP">0</span> ml/24h</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="ios-card">
+        <div class="section-title">Adéquation</div>
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-end mb-2">
+            <div>
+              <span class="label-small mb-0">Énergie (Poche + IV)</span>
+              <span class="text-primary-ios fw-bold fs-5" id="totalProvidedKcalNP_Display">0</span> <span style="font-size:0.8rem; color:#8e8e93;">/ <span id="targetKcalNP_Display">0</span> kcal</span>
+            </div>
+            <div class="text-end" style="font-size:0.7rem; color:#ff6961;">Cachées: <span id="resCachéesNP_Synth">0</span></div>
+          </div>
+          <div class="progress"><div class="progress-bar bg-primary-ios" id="barKcalNP" style="width: 0%"></div></div>
+        </div>
+        <div>
+          <div class="d-flex justify-content-between align-items-end mb-2">
+            <div>
+              <span class="label-small mb-0">Protéines</span>
+              <span class="text-success-ios fw-bold fs-5" id="totalProvidedProtNP_Display">0</span> <span style="font-size:0.8rem; color:#8e8e93;">/ <span id="targetProtNP_Display">0</span> g</span>
+            </div>
+          </div>
+          <div class="progress"><div class="progress-bar bg-success-ios" id="barProtNP" style="width: 0%"></div></div>
+          <div class="text-center mt-3 fw-bold" style="font-size: 0.85rem; color:#ff9f0a;" id="protComment">--</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <ul class="nav ios-floating-bar" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="enteral-tab" onclick="switchTab('enteral')" type="button" role="tab">
+        <div class="icon-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20v2a8 8 0 01-16 0v-2z"></path></svg>
+        </div>
+        <span>Entérale</span>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="parenteral-tab" onclick="switchTab('parenteral')" type="button" role="tab">
+        <div class="icon-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-7.5c-.5 3.5-2 5.9-4 7.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"></path></svg>
+        </div>
+        <span>Parentérale</span>
+      </button>
+    </li>
+  </ul>
+
+  <script>
+    // --- GESTION DES ONGLETS CUSTOM POUR NE PAS DEPENDRE DU JS DE BOOTSTRAP (Plus rapide sur iOS) ---
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.ios-floating-bar .nav-link').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.getElementById(tabId + '-tab').classList.add('active');
+    }
+
+    // --- VARIABLES GLOBALES ---
+    const pochesDB = {
+      'oli7_1000': { name: 'Olimel N7 (Avec Elec) 1L', vol: 1000, kcal: 1140, azote: 7.0, gluc: 140, lip: 40 },
+      'oli7_1500': { name: 'Olimel N7 (Avec Elec) 1.5L', vol: 1500, kcal: 1710, azote: 10.5, gluc: 210, lip: 60 },
+      'oli7_2000': { name: 'Olimel N7 (Avec Elec) 2L', vol: 2000, kcal: 2270, azote: 14.0, gluc: 280, lip: 80 },
+      'oli9_1000': { name: 'Olimel N9 (SANS Elec) 1L', vol: 1000, kcal: 1070, azote: 9.0, gluc: 110, lip: 40 },
+      'oli9_1500': { name: 'Olimel N9 (SANS Elec) 1.5L', vol: 1500, kcal: 1600, azote: 13.5, gluc: 165, lip: 60 },
+      'oli9_2000': { name: 'Olimel N9 (SANS Elec) 2L', vol: 2000, kcal: 2140, azote: 18.0, gluc: 220, lip: 80 },
+      'smof_986':  { name: 'SmofKabiven (SANS Elec) 986mL', vol: 986, kcal: 1100, azote: 8.0, gluc: 125, lip: 38 },
+      'smof_1477': { name: 'SmofKabiven (SANS Elec) 1477mL', vol: 1477, kcal: 1600, azote: 12.0, gluc: 187, lip: 56 },
+      'smof_1970': { name: 'SmofKabiven (SANS Elec) 1970mL', vol: 1970, kcal: 2200, azote: 16.0, gluc: 250, lip: 75 }
+    };
+
+    let selectedPoche = null;
+
+    // --- SAUVEGARDE LOCALE ---
+    function sauvegarderDonnees() {
+      const donnees = {
+        nomPatient: document.getElementById('nomPatient').value,
+        poidsReel: document.getElementById('poidsReel').value,
+        taille: document.getElementById('taille').value,
+        enConc: document.getElementById('enConc').value,
+        enProt: document.getElementById('enProt').value,
+        propofolDebitNE: document.getElementById('propofolDebitNE').value,
+        glucoseVolNE: document.getElementById('glucoseVolNE').value,
+        propofolDebitNP: document.getElementById('propofolDebitNP').value,
+        glucoseVolNP: document.getElementById('glucoseVolNP').value,
+        choixPoche: document.getElementById('choixPoche').value
+      };
+      localStorage.setItem('nutriReaData', JSON.stringify(donnees));
+    }
+
+    function chargerDonnees() {
+      const sauvegarde = localStorage.getItem('nutriReaData');
+      if (sauvegarde) {
+        const d = JSON.parse(sauvegarde);
+        if(d.nomPatient !== undefined) document.getElementById('nomPatient').value = d.nomPatient;
+        if(d.poidsReel) document.getElementById('poidsReel').value = d.poidsReel;
+        if(d.taille) document.getElementById('taille').value = d.taille;
+        if(d.enConc) document.getElementById('enConc').value = d.enConc;
+        if(d.enProt) document.getElementById('enProt').value = d.enProt;
+        if(d.propofolDebitNE !== undefined) document.getElementById('propofolDebitNE').value = d.propofolDebitNE;
+        if(d.glucoseVolNE !== undefined) document.getElementById('glucoseVolNE').value = d.glucoseVolNE;
+        if(d.propofolDebitNP !== undefined) document.getElementById('propofolDebitNP').value = d.propofolDebitNP;
+        if(d.glucoseVolNP !== undefined) document.getElementById('glucoseVolNP').value = d.glucoseVolNP;
+        
+        if(d.choixPoche) {
+          document.getElementById('choixPoche').value = d.choixPoche;
+          updatePoche();
+        }
+      }
+    }
+
+    // --- REINITIALISATION INSTANTANEE ---
+    function reinitialiserApp() {
+        localStorage.removeItem('nutriReaData');
+        document.getElementById('nomPatient').value = "";
+        document.getElementById('poidsReel').value = "70";
+        document.getElementById('taille').value = "170";
+        document.getElementById('enConc').value = "1.5";
+        document.getElementById('enProt').value = "50";
+        document.getElementById('propofolDebitNE').value = "0";
+        document.getElementById('glucoseVolNE').value = "0";
+        document.getElementById('propofolDebitNP').value = "0";
+        document.getElementById('glucoseVolNP').value = "0";
+        document.getElementById('choixPoche').value = "";
+        updatePoche();
+        calculerTout();
+    }
+
+    // --- FONCTIONS LOGIQUES ---
+    function updatePoche() {
+      const choix = document.getElementById('choixPoche').value;
+      const infoBox = document.getElementById('pocheInfo');
+      
+      if (choix && pochesDB[choix]) {
+        selectedPoche = pochesDB[choix];
+        infoBox.style.display = 'block';
+        document.getElementById('dispVol').innerText = selectedPoche.vol;
+        document.getElementById('dispKcal').innerText = selectedPoche.kcal;
+        document.getElementById('dispAzote').innerText = selectedPoche.azote;
+        document.getElementById('dispLipid').innerText = selectedPoche.lip;
+      } else {
+        selectedPoche = null;
+        infoBox.style.display = 'none';
+      }
+      calculerTout(true);
+    }
+
+    function calculerTout(resetSliders = true) {
+      const poidsReel = parseFloat(document.getElementById('poidsReel').value) || 0;
+      const tailleCm = parseFloat(document.getElementById('taille').value) || 0;
+      
+      const imc = (tailleCm > 0) ? (poidsReel / Math.pow(tailleCm/100, 2)) : 0;
+      let pi = (tailleCm - 100) - ((tailleCm - 150) / 4);
+      const pa = pi + 0.25 * (poidsReel - pi);
+
+      let poidsRefKcal, poidsRefProt;
+      if (imc < 30) {
+        poidsRefKcal = (imc > 25) ? pa : poidsReel;
+        poidsRefProt = poidsReel;
+      } else if (imc >= 30 && imc <= 50) {
+        poidsRefKcal = pa;
+        poidsRefProt = pi;
+      } else {
+        poidsRefKcal = pi;
+        poidsRefProt = pi;
+      }
+
+      document.getElementById('resIMC').innerText = imc.toFixed(1);
+      document.getElementById('resPI').innerText = pi.toFixed(1);
+      document.getElementById('resPA').innerText = pa.toFixed(1);
+
+      if (resetSliders) {
+          const propNE = parseFloat(document.getElementById('propofolDebitNE').value) || 0;
+          const propConcNE = parseFloat(document.getElementById('propofolTypeNE').value);
+          const glucNE = parseFloat(document.getElementById('glucoseVolNE').value) || 0;
+          const glucConcNE = parseFloat(document.getElementById('glucoseTypeNE').value);
+          const kcalCachéesNE = (propNE * 24 * propConcNE) + (glucNE * glucConcNE);
+
+          const targetKcalNE = parseFloat(document.getElementById('phaseNE').value);
+          const enConc = parseFloat(document.getElementById('enConc').value) || 1.5;
+          const cibleKcalTotal_NE = poidsRefKcal * targetKcalNE;
+          
+          const kcalNeededNE = Math.max(0, cibleKcalTotal_NE - kcalCachéesNE);
+          const volumeIdealNE = kcalNeededNE / enConc;
+          
+          document.getElementById('rangeVolNE').value = Math.round(volumeIdealNE);
+      }
+      
+      if (resetSliders) {
+          if (selectedPoche) {
+              document.getElementById('rangeVolNP').value = selectedPoche.vol;
+          } else {
+              document.getElementById('rangeVolNP').value = 0;
+          }
+      }
+
+      updateFromSliderNE();
+      updateFromSliderNP();
+      sauvegarderDonnees();
+    }
+
+    function updateFromSliderNE() {
+        const poidsReel = parseFloat(document.getElementById('poidsReel').value) || 0;
+        const tailleCm = parseFloat(document.getElementById('taille').value) || 0;
+        const imc = (tailleCm > 0) ? (poidsReel / Math.pow(tailleCm/100, 2)) : 0;
+        let pi = (tailleCm - 100) - ((tailleCm - 150) / 4);
+        const pa = pi + 0.25 * (poidsReel - pi);
+        let poidsRefKcal, poidsRefProt;
+        if (imc < 30) { poidsRefKcal = (imc > 25) ? pa : poidsReel; poidsRefProt = poidsReel; }
+        else if (imc >= 30 && imc <= 50) { poidsRefKcal = pa; poidsRefProt = pi; }
+        else { poidsRefKcal = pi; poidsRefProt = pi; }
+
+        const targetKcalNE = parseFloat(document.getElementById('phaseNE').value);
+        const targetProtNE = parseFloat(document.getElementById('cibleProtNE').value);
+        const cibleKcalTotal_NE = poidsRefKcal * targetKcalNE;
+        const cibleProtTotal_NE = poidsRefProt * targetProtNE;
+
+        const propNE = parseFloat(document.getElementById('propofolDebitNE').value) || 0;
+        const propConcNE = parseFloat(document.getElementById('propofolTypeNE').value);
+        const glucNE = parseFloat(document.getElementById('glucoseVolNE').value) || 0;
+        const glucConcNE = parseFloat(document.getElementById('glucoseTypeNE').value);
+        const kcalCachéesNE = (propNE * 24 * propConcNE) + (glucNE * glucConcNE);
+
+        const volumeSlider = parseFloat(document.getElementById('rangeVolNE').value);
+        const enConc = parseFloat(document.getElementById('enConc').value) || 1.5;
+        const enProtL = parseFloat(document.getElementById('enProt').value) || 50;
+
+        const debit = volumeSlider / 24;
+        const kcalApportNE = volumeSlider * enConc;
+        const protApportNE = (volumeSlider / 1000) * enProtL;
+        
+        const totalKcal = kcalApportNE + kcalCachéesNE;
+        const deficitProt = Math.max(0, cibleProtTotal_NE - protApportNE);
+        const cuilleresProtifar = (deficitProt / 0.9) / 2.5;
+
+        document.getElementById('resVolTotal').innerText = Math.round(volumeSlider);
+        document.getElementById('resDebit').innerText = debit.toFixed(1);
+
+        document.getElementById('targetKcalNE_Display').innerText = Math.round(cibleKcalTotal_NE);
+        document.getElementById('totalProvidedKcalNE_Display').innerText = Math.round(totalKcal);
+        document.getElementById('resCachéesNE_Synth').innerText = Math.round(kcalCachéesNE);
+        
+        let pctKcal = (cibleKcalTotal_NE > 0) ? (totalKcal / cibleKcalTotal_NE) * 100 : 0;
+        document.getElementById('barKcalNE').style.width = Math.min(pctKcal, 100) + "%";
+        document.getElementById('barKcalNE').className = pctKcal > 110 ? "progress-bar bg-danger" : (pctKcal < 90 ? "progress-bar bg-warning" : "progress-bar bg-primary-ios");
+
+        document.getElementById('targetProtNE_Display').innerText = cibleProtTotal_NE.toFixed(1);
+        document.getElementById('totalProvidedProtNE_Display').innerText = protApportNE.toFixed(1);
+        let pctProt = (cibleProtTotal_NE > 0) ? (protApportNE / cibleProtTotal_NE) * 100 : 0;
+        document.getElementById('barProtNE').style.width = Math.min(pctProt, 100) + "%";
+
+        document.getElementById('resProtifar').innerText = Math.max(0, cuilleresProtifar).toFixed(1);
+        document.getElementById('resDeficitProt').innerText = deficitProt.toFixed(1);
+        
+        sauvegarderDonnees();
+    }
+
+    function updateFromSliderNP() {
+        const poidsReel = parseFloat(document.getElementById('poidsReel').value) || 0;
+        const tailleCm = parseFloat(document.getElementById('taille').value) || 0;
+        const imc = (tailleCm > 0) ? (poidsReel / Math.pow(tailleCm/100, 2)) : 0;
+        let pi = (tailleCm - 100) - ((tailleCm - 150) / 4);
+        const pa = pi + 0.25 * (poidsReel - pi);
+        let poidsRefKcal, poidsRefProt;
+        if (imc < 30) { poidsRefKcal = (imc > 25) ? pa : poidsReel; poidsRefProt = poidsReel; }
+        else if (imc >= 30 && imc <= 50) { poidsRefKcal = pa; poidsRefProt = pi; }
+        else { poidsRefKcal = pi; poidsRefProt = pi; }
+
+        const targetKcalNP = parseFloat(document.getElementById('phaseNP').value);
+        const targetProtNP = parseFloat(document.getElementById('cibleProtNP').value);
+        const cibleKcalTotal_NP = poidsRefKcal * targetKcalNP;
+        const cibleProtTotal_NP = poidsRefProt * targetProtNP;
+
+        const propNP = parseFloat(document.getElementById('propofolDebitNP').value) || 0;
+        const propConcNP = parseFloat(document.getElementById('propofolTypeNP').value);
+        const glucNP = parseFloat(document.getElementById('glucoseVolNP').value) || 0;
+        const glucConcNP = parseFloat(document.getElementById('glucoseTypeNP').value);
+        const kcalCachéesNP = (propNP * 24 * propConcNP) + (glucNP * glucConcNP);
+
+        const volumeSlider = parseFloat(document.getElementById('rangeVolNP').value);
+        
+        let kcalApportPoche = 0;
+        let protApportPoche = 0;
+        
+        if (selectedPoche) {
+            const ratio = volumeSlider / selectedPoche.vol;
+            kcalApportPoche = selectedPoche.kcal * ratio;
+            protApportPoche = (selectedPoche.azote * 6.25) * ratio;
+        }
+
+        const debit = volumeSlider / 24;
+        const totalKcal = kcalApportPoche + kcalCachéesNP;
+
+        document.getElementById('resVolTotalNP').innerText = Math.round(volumeSlider);
+        document.getElementById('resDebitNP').innerText = debit.toFixed(1);
+        
+        document.getElementById('targetKcalNP_Display').innerText = Math.round(cibleKcalTotal_NP);
+        document.getElementById('totalProvidedKcalNP_Display').innerText = Math.round(totalKcal);
+        document.getElementById('resCachéesNP_Synth').innerText = Math.round(kcalCachéesNP);
+
+        let pctKcal = (cibleKcalTotal_NP > 0) ? (totalKcal / cibleKcalTotal_NP) * 100 : 0;
+        document.getElementById('barKcalNP').style.width = Math.min(pctKcal, 100) + "%";
+        document.getElementById('barKcalNP').className = pctKcal > 110 ? "progress-bar bg-danger" : (pctKcal < 90 ? "progress-bar bg-warning" : "progress-bar bg-primary-ios");
+
+        document.getElementById('targetProtNP_Display').innerText = cibleProtTotal_NP.toFixed(1);
+        document.getElementById('totalProvidedProtNP_Display').innerText = protApportPoche.toFixed(1);
+        
+        let pctProt = (cibleProtTotal_NP > 0) ? (protApportPoche / cibleProtTotal_NP) * 100 : 0;
+        document.getElementById('barProtNP').style.width = Math.min(pctProt, 100) + "%";
+
+        const diffProt = protApportPoche - cibleProtTotal_NP;
+        if (selectedPoche) {
+            if (diffProt < -5) document.getElementById('protComment').innerText = "Déficit de " + Math.abs(diffProt).toFixed(1) + " g";
+            else if (diffProt > 5) document.getElementById('protComment').innerText = "Excès de " + diffProt.toFixed(1) + " g";
+            else document.getElementById('protComment').innerHTML = "<span style='color:#30d158'>Objectif atteint</span>";
+        } else {
+            document.getElementById('protComment').innerText = "--";
+        }
+        
+        sauvegarderDonnees();
+    }
+    
+    window.onload = function() {
+        chargerDonnees();
+        calculerTout();
+        
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+          input.addEventListener('change', sauvegarderDonnees);
+        });
+    };
+  </script>
+</body>
+</html>
