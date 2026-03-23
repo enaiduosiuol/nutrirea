@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html data-bs-theme="dark">
+<html lang="fr">
 <head>
   <base target="_top">
   <meta charset="UTF-8">
   <title>NutriRea</title>
   
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="NutriRea">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
   
@@ -14,21 +14,21 @@
   
   <style>
     /* ========================================= */
-    /* STYLE GLOBAL (DARK MODE iOS)              */
+    /* STYLE GLOBAL (LIGHT MODE iOS)             */
     /* ========================================= */
     body { 
-      background-color: #000000; 
-      color: #ffffff;
+      background-color: #f2f2f7; /* Gris perle Apple pour le fond */
+      color: #000000;
       font-family: '-apple-system', 'SF Pro Display', 'SF Pro Text', sans-serif; 
       padding-bottom: calc(120px + env(safe-area-inset-bottom)); 
       -webkit-font-smoothing: antialiased;
     }
 
-    /* NOUVEAU : Wrapper pour restreindre et centrer l'app sur PC/Mac */
+    /* Wrapper pour restreindre et centrer l'app sur PC/Mac */
     .app-wrapper {
-      max-width: 440px; /* Largeur maximale type iPhone Max */
-      margin: 0 auto; /* Centre la colonne sur grand écran */
-      background-color: #000000;
+      max-width: 440px; 
+      margin: 0 auto; 
+      background-color: #f2f2f7;
       position: relative;
     }
     
@@ -37,76 +37,85 @@
       padding: calc(20px + env(safe-area-inset-top)) 20px 10px 20px; 
       display: flex; justify-content: space-between; align-items: flex-end;
     }
-    .ios-title { font-size: 34px; font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin: 0; }
+    .ios-title { font-size: 34px; font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin: 0; color: #000000; }
     .ios-subtitle { color: #8e8e93; font-weight: 600; font-size: 14px; margin-top: 5px; }
     .btn-reset { 
-      background: #1c1c1e; color: #0a84ff; border: none; border-radius: 20px; 
+      background: #e5e5ea; color: #007aff; border: none; border-radius: 20px; 
       padding: 8px 16px; font-size: 0.85rem; font-weight: 700; height: fit-content; margin-bottom: 5px;
     }
-    .btn-reset:active { background: #2c2c2e; opacity: 0.8; }
+    .btn-reset:active { background: #d1d1d6; }
     
     /* CARTES */
-    .ios-card { background-color: #1c1c1e; border-radius: 24px; padding: 20px; margin: 0 20px 20px 20px; }
-    .card-gradient-ne { background: linear-gradient(145deg, #10243e 0%, #0a1120 100%); border: 1px solid rgba(10, 132, 255, 0.2); }
-    .card-gradient-np { background: linear-gradient(145deg, #133324 0%, #081610 100%); border: 1px solid rgba(48, 209, 88, 0.2); }
-    .card-gradient-warn { background: linear-gradient(145deg, #3a250b 0%, #1a1003 100%); border: 1px solid rgba(255, 159, 10, 0.2); }
+    .ios-card { background-color: #ffffff; border-radius: 24px; padding: 20px; margin: 0 20px 20px 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.03); }
+    
+    /* Dégradés pastel pour les résultats en mode clair */
+    .card-gradient-ne { background: linear-gradient(145deg, #f0f8ff 0%, #e5f0ff 100%); border: 1px solid rgba(10, 132, 255, 0.1); }
+    .card-gradient-np { background: linear-gradient(145deg, #f0fdf4 0%, #e4f8e9 100%); border: 1px solid rgba(48, 209, 88, 0.1); }
+    .card-gradient-warn { background: linear-gradient(145deg, #fffaf0 0%, #fff4e5 100%); border: 1px solid rgba(255, 159, 10, 0.1); }
 
-    .section-title { font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+    .section-title { font-size: 1.1rem; font-weight: 700; color: #000000; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
     .section-title svg { color: #8e8e93; }
 
     /* FORMULAIRES */
     .form-control, .form-select { 
-      background-color: #2c2c2e !important; color: white !important; border: none !important; 
+      background-color: #f2f2f7 !important; color: #000000 !important; border: none !important; 
       border-radius: 12px !important; min-height: 44px; font-size: 16px; font-weight: 500;
     }
     .form-control:focus, .form-select:focus { box-shadow: 0 0 0 2px #0a84ff !important; }
     .label-small { font-size: 0.8rem; font-weight: 600; color: #8e8e93; margin-bottom: 6px; display: block; }
     
     .anthro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-top: 15px; }
-    .anthro-box { background: #2c2c2e; border-radius: 12px; padding: 10px 5px; }
+    .anthro-box { background: #f2f2f7; border-radius: 12px; padding: 10px 5px; }
     .anthro-val { font-size: 1.1rem; font-weight: 700; color: #0a84ff; display: block; margin-top: 4px; }
     .anthro-label { font-size: 0.65rem; color: #8e8e93; font-weight: 600; text-transform: uppercase; }
 
-    .highlight-value { font-size: 2.5rem; font-weight: 800; color: #ffffff; line-height: 1; margin: 10px 0; }
+    .highlight-value { font-size: 2.5rem; font-weight: 800; line-height: 1; margin: 10px 0; }
     .highlight-unit { font-size: 1rem; font-weight: 600; color: #8e8e93; }
-    .text-primary-ios { color: #0a84ff !important; }
-    .text-success-ios { color: #30d158 !important; }
+    .text-primary-ios { color: #007aff !important; }
+    .text-success-ios { color: #34c759 !important; }
     .text-warning-ios { color: #ff9f0a !important; }
 
     .carac-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; text-align: center; }
-    .carac-box { background: #2c2c2e; border-radius: 12px; padding: 10px; }
+    .carac-box { background: #f2f2f7; border-radius: 12px; padding: 10px; }
     .carac-label { display: block; font-size: 0.7rem; color: #8e8e93; font-weight: 600; margin-bottom: 2px; }
-    .carac-val { font-weight: 800; color: #ffffff; font-size: 1rem; }
+    .carac-val { font-weight: 800; color: #000000; font-size: 1rem; }
 
-    .progress { background-color: #2c2c2e; border-radius: 8px; height: 10px; overflow: hidden; }
+    .progress { background-color: #e5e5ea; border-radius: 8px; height: 10px; overflow: hidden; }
     .progress-bar { border-radius: 8px; }
-    .bg-primary-ios { background-color: #0a84ff !important; }
-    .bg-success-ios { background-color: #30d158 !important; }
-    input[type=range] { accent-color: #0a84ff; width: 100%; cursor: pointer;}
+    .bg-primary-ios { background-color: #007aff !important; }
+    .bg-success-ios { background-color: #34c759 !important; }
+    input[type=range] { accent-color: #007aff; width: 100%; cursor: pointer;}
 
-    /* BARRE FLOTTANTE iOS - Adaptée pour rester centrée sur PC */
+    /* ========================================= */
+    /* BARRE FLOTTANTE iOS (Bien visible)        */
+    /* ========================================= */
     .ios-floating-bar {
       position: fixed; 
       bottom: calc(15px + env(safe-area-inset-bottom)); 
-      left: 50%; /* Centre la barre à 50% de l'écran */
-      transform: translateX(-50%); /* Ajuste le centrage parfait */
-      width: calc(100% - 40px); /* Laisse 20px de marge de chaque côté sur mobile */
-      max-width: 400px; /* Bloque la largeur max à celle du wrapper sur PC */
-      background-color: rgba(30, 30, 30, 0.75); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      left: 50%; 
+      transform: translateX(-50%); 
+      width: calc(100% - 40px); 
+      max-width: 400px; 
+      background-color: rgba(255, 255, 255, 0.90); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
       border-radius: 40px; display: flex; justify-content: space-around; align-items: center; padding: 10px;
-      z-index: 1000; border: 1px solid rgba(255,255,255,0.1); 
+      z-index: 1000; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
     }
     .ios-floating-bar .nav-item { flex: 1; display: flex; justify-content: center; }
     .ios-floating-bar .nav-link {
       border: none !important; background: transparent !important; color: #8e8e93; font-size: 0.65rem; 
       font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0;
     }
+    
+    /* Pastille icône plus grande pour mieux ressortir */
     .ios-floating-bar .icon-wrapper {
-      width: 54px; height: 32px; display: flex; align-items: center; justify-content: center;
-      border-radius: 16px; transition: all 0.2s ease; color: #8e8e93; 
+      width: 60px; height: 36px; display: flex; align-items: center; justify-content: center;
+      border-radius: 18px; transition: all 0.2s ease; color: #8e8e93; 
     }
-    .ios-floating-bar .nav-link.active { color: #ffffff; }
-    .ios-floating-bar .nav-link.active .icon-wrapper { background-color: rgba(255,255,255,0.15); color: #ffffff; }
+    
+    /* STYLE ONGLETS ACTIFS (Contraste fort) */
+    .ios-floating-bar .nav-link.active { color: #007aff; font-weight: 700; }
+    .ios-floating-bar .nav-link.active .icon-wrapper { background-color: #007aff; color: #ffffff; }
+    
     .ios-floating-bar svg { width: 22px; height: 22px; }
 
     .tab-pane { display: none; }
@@ -216,12 +225,12 @@
         </div>
 
         <div class="ios-card card-gradient-ne text-center">
-          <div class="label-small text-uppercase mb-1" style="color: #64d2ff;">Prescription Pompe</div>
+          <div class="label-small text-uppercase mb-1" style="color: #007aff;">Prescription Pompe</div>
           <div class="highlight-value text-primary-ios"><span id="resDebit">0.0</span> <span class="highlight-unit">ml/h</span></div>
           <div class="mt-4 px-2">
             <input type="range" class="form-range" id="rangeVolNE" min="0" max="3000" step="10" oninput="updateFromSliderNE()">
             <div class="d-flex justify-content-between mt-2" style="font-size: 0.8rem; color:#8e8e93;">
-                <span>Volume Ajusté</span><strong class="text-white"><span id="resVolTotal">0</span> ml/24h</strong>
+                <span>Volume Ajusté</span><strong class="text-black"><span id="resVolTotal">0</span> ml/24h</strong>
             </div>
           </div>
         </div>
@@ -234,7 +243,7 @@
                 <span class="label-small mb-0">Énergie (NE + IV)</span>
                 <span class="text-primary-ios fw-bold fs-5" id="totalProvidedKcalNE_Display">0</span> <span style="font-size:0.8rem; color:#8e8e93;">/ <span id="targetKcalNE_Display">0</span> kcal</span>
               </div>
-              <div class="text-end" style="font-size:0.7rem; color:#ff6961;">Cachées: <span id="resCachéesNE_Synth">0</span></div>
+              <div class="text-end" style="font-size:0.7rem; color:#ff3b30;">Cachées: <span id="resCachéesNE_Synth">0</span></div>
             </div>
             <div class="progress"><div class="progress-bar bg-primary-ios" id="barKcalNE" style="width: 0%"></div></div>
           </div>
@@ -250,9 +259,9 @@
         </div>
 
         <div class="ios-card card-gradient-warn text-center">
-          <div class="label-small text-uppercase" style="color:#ffd60a;">Complément Protifar</div>
+          <div class="label-small text-uppercase" style="color:#ff9f0a;">Complément Protifar</div>
           <div class="highlight-value text-warning-ios"><span id="resProtifar">0.0</span> <span class="highlight-unit">cuillères</span></div>
-          <div style="font-size: 0.8rem; color:#8e8e93;">Déficit à combler: <span id="resDeficitProt" class="text-white fw-bold">0.0</span> g</div>
+          <div style="font-size: 0.8rem; color:#8e8e93;">Déficit à combler: <span id="resDeficitProt" class="text-black fw-bold">0.0</span> g</div>
         </div>
       </div>
 
@@ -342,12 +351,12 @@
         </div>
 
         <div class="ios-card card-gradient-np text-center">
-          <div class="label-small text-uppercase mb-1" style="color: #30d158;">Prescription Pompe</div>
+          <div class="label-small text-uppercase mb-1" style="color: #34c759;">Prescription Pompe</div>
           <div class="highlight-value text-success-ios"><span id="resDebitNP">0.0</span> <span class="highlight-unit">ml/h</span></div>
           <div class="mt-4 px-2">
             <input type="range" class="form-range" id="rangeVolNP" min="0" max="3000" step="10" oninput="updateFromSliderNP()">
             <div class="d-flex justify-content-between mt-2" style="font-size: 0.8rem; color:#8e8e93;">
-                <span>Volume Ajusté</span><strong class="text-white"><span id="resVolTotalNP">0</span> ml/24h</strong>
+                <span>Volume Ajusté</span><strong class="text-black"><span id="resVolTotalNP">0</span> ml/24h</strong>
             </div>
           </div>
         </div>
@@ -360,7 +369,7 @@
                 <span class="label-small mb-0">Énergie (Poche + IV)</span>
                 <span class="text-primary-ios fw-bold fs-5" id="totalProvidedKcalNP_Display">0</span> <span style="font-size:0.8rem; color:#8e8e93;">/ <span id="targetKcalNP_Display">0</span> kcal</span>
               </div>
-              <div class="text-end" style="font-size:0.7rem; color:#ff6961;">Cachées: <span id="resCachéesNP_Synth">0</span></div>
+              <div class="text-end" style="font-size:0.7rem; color:#ff3b30;">Cachées: <span id="resCachéesNP_Synth">0</span></div>
             </div>
             <div class="progress"><div class="progress-bar bg-primary-ios" id="barKcalNP" style="width: 0%"></div></div>
           </div>
@@ -625,7 +634,7 @@
         if (selectedPoche) {
             if (diffProt < -5) document.getElementById('protComment').innerText = "Déficit de " + Math.abs(diffProt).toFixed(1) + " g";
             else if (diffProt > 5) document.getElementById('protComment').innerText = "Excès de " + diffProt.toFixed(1) + " g";
-            else document.getElementById('protComment').innerHTML = "<span style='color:#30d158'>Objectif atteint</span>";
+            else document.getElementById('protComment').innerHTML = "<span style='color:#34c759'>Objectif atteint</span>";
         } else { document.getElementById('protComment').innerText = "--"; }
         sauvegarderDonnees();
     }
