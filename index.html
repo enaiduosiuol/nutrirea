@@ -73,9 +73,8 @@
     .anthro-val { font-size: 1.1rem; font-weight: 700; color: #0a84ff; display: block; margin-top: 4px; }
     .anthro-label { font-size: 0.65rem; color: #8e8e93; font-weight: 600; text-transform: uppercase; }
 
-    /* NOUVEAU: Encadré rouge pour indiquer le poids utilisé */
     .active-weight-box {
-      box-shadow: 0 0 0 2px #ff3b30 inset !important; /* Utilisation de shadow-inset au lieu de border pour ne pas décaler le design */
+      box-shadow: 0 0 0 2px #ff3b30 inset !important; 
       background-color: #fff0f0 !important;
     }
 
@@ -100,8 +99,8 @@
     /* PANNEAUX GUIDELINES (BUREAU UNIQUEMENT)   */
     /* ========================================= */
     .desktop-guidelines, .desktop-guidelines-prot {
-      display: none; /* Caché sur mobile */
-      background-color: #e5e5ea !important; /* Grisé pour le style commentaire */
+      display: none; 
+      background-color: #e5e5ea !important; 
     }
 
     @media (min-width: 1080px) {
@@ -223,7 +222,7 @@
           </div>
         </div>
 
-        <div class="ios-card">
+        <div class="ios-card relative-card">
           <div class="section-title">Paramètres NE</div>
           <div class="row g-3 mb-3">
             <div class="col-6">
@@ -241,15 +240,12 @@
             <div class="col-6">
               <label class="label-small">Cible (g/kg)</label>
               <select id="cibleProtNE" class="form-select" onchange="calculerTout()">
-                <optgroup label="Standard (P.Réel)">
-                  <option value="1.0">1.0 g/kg</option>
-                  <option value="1.5" selected>1.5 g/kg</option>
-                  <option value="2.0">2.0 g/kg</option>
-                </optgroup>
-                <optgroup label="Obésité (P.Idéal)">
-                  <option value="2.0">2.0 g/kg (IMC >30)</option>
-                  <option value="2.5">2.5 g/kg (IMC >40)</option>
-                </optgroup>
+                <option value="0.8">0.8 g/kg</option>
+                <option value="1.0">1.0 g/kg</option>
+                <option value="1.2">1.2 g/kg</option>
+                <option value="1.5" selected>1.5 g/kg</option>
+                <option value="2.0">2.0 g/kg</option>
+                <option value="2.5">2.5 g/kg</option>
               </select>
             </div>
           </div>
@@ -370,7 +366,7 @@
           </div>
         </div>
 
-        <div class="ios-card">
+        <div class="ios-card relative-card">
           <div class="section-title">Paramètres NP</div>
           <div class="row g-3">
             <div class="col-6">
@@ -388,15 +384,12 @@
             <div class="col-6">
               <label class="label-small">Cible (g/kg)</label>
               <select id="cibleProtNP" class="form-select" onchange="calculerTout()">
-                <optgroup label="Standard (P.Réel)">
-                  <option value="1.0">1.0 g/kg</option>
-                  <option value="1.5" selected>1.5 g/kg</option>
-                  <option value="2.0">2.0 g/kg</option>
-                </optgroup>
-                <optgroup label="Obésité (P.Idéal)">
-                  <option value="2.0">2.0 g/kg (IMC >30)</option>
-                  <option value="2.5">2.5 g/kg (IMC >40)</option>
-                </optgroup>
+                <option value="0.8">0.8 g/kg</option>
+                <option value="1.0">1.0 g/kg</option>
+                <option value="1.2">1.2 g/kg</option>
+                <option value="1.5" selected>1.5 g/kg</option>
+                <option value="2.0">2.0 g/kg</option>
+                <option value="2.5">2.5 g/kg</option>
               </select>
             </div>
           </div>
@@ -608,10 +601,8 @@
       let pi = (tailleCm - 100) - ((tailleCm - 150) / 4); 
       const pa = pi + 0.25 * (poidsReel - pi);
 
-      // --- LOGIQUE DE CHOIX DU POIDS DE REFERENCE ET AFFICHAGE CADRE ROUGE ---
       let poidsRefKcal, poidsRefProt;
       
-      // Réinitialiser les encadrés rouges
       document.getElementById('poidsReel').classList.remove('active-weight-box');
       document.getElementById('boxPA').classList.remove('active-weight-box');
       document.getElementById('boxPI').classList.remove('active-weight-box');
@@ -626,7 +617,6 @@
           poidsRefProt = pa; 
           document.getElementById('boxPA').classList.add('active-weight-box');
         } else { 
-          // IMC > 40
           poidsRefKcal = pi; 
           poidsRefProt = pi; 
           document.getElementById('boxPI').classList.add('active-weight-box');
