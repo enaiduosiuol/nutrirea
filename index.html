@@ -30,7 +30,7 @@
       margin: 0 auto; 
       background-color: #f2f2f7;
       position: relative;
-      transition: margin 0.3s ease;
+      transition: margin-left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     
     .ios-header { 
@@ -53,7 +53,7 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.06);
     }
     
-    .relative-card { position: relative; }
+    .tab-pane { position: relative; } /* Pour ancrer le panneau latéral */
     
     .card-gradient-ne { background: linear-gradient(145deg, #f0f8ff 0%, #e5f0ff 100%); border: 1px solid rgba(10, 132, 255, 0.1); }
     .card-gradient-np { background: linear-gradient(145deg, #f0fdf4 0%, #e4f8e9 100%); border: 1px solid rgba(48, 209, 88, 0.1); }
@@ -92,57 +92,65 @@
     .carac-val { font-weight: 800; color: #000000; font-size: 1rem; }
 
     .progress { background-color: #e5e5ea; border-radius: 8px; height: 10px; overflow: hidden; }
-    .progress-bar { border-radius: 8px; }
+    .progress-bar { border-radius: 8px; transition: width 0.4s ease; }
     .bg-primary-ios { background-color: #007aff !important; }
     .bg-success-ios { background-color: #34c759 !important; }
     input[type=range] { accent-color: #007aff; width: 100%; cursor: pointer;}
 
     /* ========================================= */
-    /* PANNEAUX GUIDELINES (HYBRIDE MOBILE/PC)   */
+    /* COMMENTAIRES (DÉROULANTS PARTOUT)         */
     /* ========================================= */
-    .btn-info-toggle {
-      background: transparent; border: none; color: #007aff; padding: 0; cursor: pointer;
-    }
-    
-    .mobile-guides-wrapper {
-      display: none; 
-      flex-direction: column; gap: 15px; margin-bottom: 20px;
-    }
-    .mobile-guides-wrapper.show {
-      display: flex;
-      animation: fadeIn 0.3s ease;
-    }
-    .guidelines-panel {
-      background-color: #e5e5ea !important;
-      border-radius: 16px;
-      padding: 15px;
-    }
+    .btn-info-toggle { background: transparent; border: none; color: #007aff; padding: 0; cursor: pointer; }
+    .mobile-guides-wrapper { display: none; flex-direction: column; gap: 15px; margin-bottom: 20px; }
+    .mobile-guides-wrapper.show { display: flex; animation: fadeIn 0.3s ease; }
+    .guidelines-panel { background-color: #e5e5ea !important; border-radius: 16px; padding: 15px; }
     .guidelines-panel .guide-text { font-size: 0.85rem; color: #505052; line-height: 1.4; }
-    .guidelines-panel ul { margin-bottom: 0; }
+    .guidelines-panel ul { margin-bottom: 0; padding-left: 20px; margin-top: 6px; }
     .guidelines-panel li { margin-bottom: 6px; }
     .guidelines-panel .section-title { color: #004b9c !important; font-size: 1rem; margin-top: 0; margin-bottom: 12px; }
 
-    /* Sur grand écran (Centrage et panneaux latéraux) */
-    @media (min-width: 1180px) {
-      .app-wrapper {
-        margin-left: calc(50% - 580px); /* Centrage des 3 blocs */
-      }
-      .btn-info-toggle { display: none !important; }
-      
-      .mobile-guides-wrapper { 
-        display: block !important; /* Force l'affichage du conteneur */
-      }
-      .guidelines-panel {
-        position: absolute;
-        top: 0; bottom: 0; height: 100%; width: 340px;
-        border-radius: 24px; padding: 20px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-        overflow-y: auto;
-        box-sizing: border-box;
-      }
-      .guide-cal { left: calc(100% + 20px); }
-      .guide-prot { left: calc(100% + 20px + 340px + 20px); }
+    /* ========================================= */
+    /* PANNEAU COMPARATIF NE                     */
+    /* ========================================= */
+    .btn-table-toggle {
+      background-color: #f0f8ff; border: 1px solid #cce5ff; color: #007aff; border-radius: 12px;
+      padding: 10px; font-weight: 600; font-size: 0.85rem; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;
     }
+    .btn-table-toggle:active { background-color: #cce5ff; }
+    
+    .side-table-panel { display: none; background-color: #ffffff; }
+
+    /* Sur grand écran */
+    @media (min-width: 1180px) {
+      .app-wrapper.table-open {
+        margin-left: calc(50% - 470px); /* Décale vers la gauche pour centrer l'ensemble */
+      }
+      .side-table-panel {
+        position: absolute;
+        top: 0; bottom: 0;
+        left: calc(100% + 20px);
+        width: 480px; /* Panneau large pour le tableau */
+        border-radius: 24px;
+        padding: 20px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        z-index: 100;
+        overflow-y: auto;
+      }
+      .side-table-panel.show { display: block; animation: slideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+      .app-wrapper.table-open .ios-floating-bar { left: calc(50% - 250px); }
+    }
+    /* Sur petit écran (Mobile) */
+    @media (max-width: 1179px) {
+      .side-table-panel.show {
+        display: block; border-radius: 16px; padding: 15px; margin-bottom: 15px; border: 1px solid #e5e5ea;
+        animation: fadeIn 0.3s ease;
+      }
+    }
+
+    /* Style du tableau HTML */
+    .custom-table th { background-color: #f2f2f7; color: #8e8e93; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; border-bottom: none; }
+    .custom-table td { font-size: 0.8rem; vertical-align: middle; border-color: #e5e5ea; }
+    .custom-table .prod-name { font-weight: 700; color: #000; font-size: 0.85rem; }
 
     /* ========================================= */
     /* BARRE FLOTTANTE iOS                       */
@@ -153,24 +161,11 @@
       background-color: rgba(255, 255, 255, 0.90); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
       border-radius: 40px; display: flex; justify-content: space-around; align-items: center; padding: 10px;
       z-index: 1000; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
-      transition: left 0.3s ease;
+      transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-    
-    @media (min-width: 1180px) {
-      .ios-floating-bar {
-        left: calc(50% - 360px); /* Centre sous la colonne principale */
-      }
-    }
-
     .ios-floating-bar .nav-item { flex: 1; display: flex; justify-content: center; }
-    .ios-floating-bar .nav-link {
-      border: none !important; background: transparent !important; color: #8e8e93; font-size: 0.65rem; 
-      font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0;
-    }
-    .ios-floating-bar .icon-wrapper {
-      width: 60px; height: 36px; display: flex; align-items: center; justify-content: center;
-      border-radius: 18px; transition: all 0.2s ease; color: #8e8e93; 
-    }
+    .ios-floating-bar .nav-link { border: none !important; background: transparent !important; color: #8e8e93; font-size: 0.65rem; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0; }
+    .ios-floating-bar .icon-wrapper { width: 60px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 18px; transition: all 0.2s ease; color: #8e8e93; }
     .ios-floating-bar .nav-link.active { color: #007aff; font-weight: 700; }
     .ios-floating-bar .nav-link.active .icon-wrapper { background-color: #007aff; color: #ffffff; }
     .ios-floating-bar svg { width: 22px; height: 22px; }
@@ -178,6 +173,7 @@
     .tab-pane { display: none; }
     .tab-pane.active { display: block; animation: fadeIn 0.3s; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
   </style>
 </head>
 <body>
@@ -219,44 +215,102 @@
       
       <div class="tab-pane active" id="enteral" role="tabpanel">
         
-        <div class="ios-card relative-card">
+        <div id="en-table-panel" class="side-table-panel no-print">
+          <div class="section-title mb-4">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+            <span style="color: #007aff;">Comparateur de Solutions NE</span>
+          </div>
+          
+          <div class="table-responsive">
+            <table class="table custom-table table-bordered text-center align-middle">
+              <thead>
+                <tr>
+                  <th class="text-start">Produit</th>
+                  <th>Kcal<br><span style="font-size:0.6rem; text-transform:none;">/mL</span></th>
+                  <th>Prot<br><span style="font-size:0.6rem; text-transform:none;">(g/L)</span></th>
+                  <th>Glucides<br><span style="font-size:0.6rem; text-transform:none;">(g/L)</span></th>
+                  <th>Lipides<br><span style="font-size:0.6rem; text-transform:none;">(g/L)</span></th>
+                  <th>Eau<br><span style="font-size:0.6rem; text-transform:none;">(mL/L)</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-start prod-name">Fresubin 2 kcal HP</td>
+                  <td>2.0</td>
+                  <td class="fw-bold" style="color: #007aff;">100</td>
+                  <td>167</td>
+                  <td>89</td>
+                  <td class="text-muted">710</td>
+                </tr>
+                <tr>
+                  <td class="text-start prod-name">Fresubin HP Energy</td>
+                  <td>1.5</td>
+                  <td class="fw-bold" style="color: #007aff;">75</td>
+                  <td>170</td>
+                  <td>58</td>
+                  <td class="text-muted">790</td>
+                </tr>
+                <tr>
+                  <td class="text-start prod-name">Sondalis HP 2 kcal</td>
+                  <td>2.0</td>
+                  <td class="fw-bold" style="color: #007aff;">84</td>
+                  <td>200</td>
+                  <td>96</td>
+                  <td class="text-muted">690</td>
+                </tr>
+                <tr>
+                  <td class="text-start prod-name">Sondalis HP Energy</td>
+                  <td>1.5</td>
+                  <td class="fw-bold" style="color: #007aff;">75</td>
+                  <td>159</td>
+                  <td>58</td>
+                  <td class="text-muted">770</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-3 text-muted" style="font-size: 0.75rem; line-height: 1.3;">
+            <strong style="color: #000;">Note :</strong> Ces valeurs correspondent à la composition pour <strong>1000 mL</strong> de produit. Veillez à toujours vérifier l'étiquette exacte du produit utilisé dans votre service.
+          </div>
+        </div>
+        <div class="ios-card">
           <div class="section-title" style="justify-content: space-between; width: 100%;">
             <div style="display: flex; align-items: center; gap: 8px;">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 12 12 12 8"></polyline><line x1="9" y1="12" x2="15" y2="12"></line></svg>
               Paramètres NE
             </div>
-            <button type="button" class="btn-info-toggle d-xl-none" onclick="toggleGuidelines('guides-ne')">
+            <button type="button" class="btn-info-toggle" onclick="toggleGuidelines('guides-ne')">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
             </button>
           </div>
 
           <div id="guides-ne" class="mobile-guides-wrapper no-print">
-            <div class="guidelines-panel guide-cal">
+            <div class="guidelines-panel">
               <div class="section-title">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                 Directives Caloriques SRLF 2025
               </div>
               <div class="guide-text">
                 <strong style="color: #000000;">Apports Caloriques (Adultes) :</strong>
-                <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 14px;">
+                <ul>
                   <li><strong>PHASE AIGÜE (J1 à J7) :</strong> <br>Apport restrictif de 6 à 8 kcal/kg/jour.</li>
                   <li><strong>PHASE POST-AIGÜE (> J7) :</strong> <br>Cible standard de 20 à 30 kcal/kg/jour.</li>
                 </ul>
-                <strong style="color: #000000;">Hypophosphatémie (< 0,65 mmol/L) :</strong>
-                <ul style="padding-left: 20px; margin-top: 6px;">
+                <strong style="color: #000000; display:block; margin-top:10px;">Hypophosphatémie (< 0,65 mmol/L) :</strong>
+                <ul>
                   <li>Réduire l'apport à <strong>20 kcal/h</strong> (480 kcal/j) pendant 48h.</li>
                   <li>Augmenter ensuite progressivement.</li>
                 </ul>
               </div>
             </div>
-            <div class="guidelines-panel guide-prot">
+            <div class="guidelines-panel">
               <div class="section-title">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                   Directives Protéiques SRLF 2025
               </div>
               <div class="guide-text">
                   <strong style="color: #000000;">Apports Protéiques (Adultes) :</strong>
-                  <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 14px;">
+                  <ul>
                       <li><strong>PHASE AIGÜE (J1 à J7) :</strong> <br>Apport faible de 0,2 à 0,9 g/kg/jour (ajusté sur l'IMC).</li>
                       <li><strong>PHASE POST-AIGÜE (> J7) :</strong> <br>Cible standard de 1,0 à 1,3 g/kg/jour (ajusté sur l'IMC).</li>
                   </ul>
@@ -292,6 +346,12 @@
               </select>
             </div>
           </div>
+
+          <button type="button" class="btn-table-toggle mb-3" onclick="toggleENTable()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Comparer les Solutions NE
+          </button>
+
           <div class="row g-3">
             <div class="col-6">
               <label class="label-small">Densité (kcal/mL)</label>
@@ -371,44 +431,44 @@
 
       <div class="tab-pane" id="parenteral" role="tabpanel">
         
-        <div class="ios-card relative-card">
+        <div class="ios-card">
           <div class="section-title" style="justify-content: space-between; width: 100%;">
             <div style="display: flex; align-items: center; gap: 8px;">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 12 12 12 8"></polyline><line x1="9" y1="12" x2="15" y2="12"></line></svg>
               Paramètres NP
             </div>
-            <button type="button" class="btn-info-toggle d-xl-none" onclick="toggleGuidelines('guides-np')">
+            <button type="button" class="btn-info-toggle" onclick="toggleGuidelines('guides-np')">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
             </button>
           </div>
 
           <div id="guides-np" class="mobile-guides-wrapper no-print">
-            <div class="guidelines-panel guide-cal">
+            <div class="guidelines-panel">
               <div class="section-title">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                 Directives Caloriques SRLF 2025
               </div>
               <div class="guide-text">
                 <strong style="color: #000000;">Apports Caloriques (Adultes) :</strong>
-                <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 14px;">
+                <ul>
                   <li><strong>PHASE AIGÜE (J1 à J7) :</strong> <br>Apport restrictif de 6 à 8 kcal/kg/jour.</li>
                   <li><strong>PHASE POST-AIGÜE (> J7) :</strong> <br>Cible standard de 20 à 30 kcal/kg/jour.</li>
                 </ul>
-                <strong style="color: #000000;">Hypophosphatémie (< 0,65 mmol/L) :</strong>
-                <ul style="padding-left: 20px; margin-top: 6px;">
+                <strong style="color: #000000; display:block; margin-top:10px;">Hypophosphatémie (< 0,65 mmol/L) :</strong>
+                <ul>
                   <li>Réduire l'apport à <strong>20 kcal/h</strong> (480 kcal/j) pendant 48h.</li>
                   <li>Augmenter ensuite progressivement.</li>
                 </ul>
               </div>
             </div>
-            <div class="guidelines-panel guide-prot">
+            <div class="guidelines-panel">
               <div class="section-title">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                   Directives Protéiques SRLF 2025
               </div>
               <div class="guide-text">
                   <strong style="color: #000000;">Apports Protéiques (Adultes) :</strong>
-                  <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 14px;">
+                  <ul>
                       <li><strong>PHASE AIGÜE (J1 à J7) :</strong> <br>Apport faible de 0,2 à 0,9 g/kg/jour (ajusté sur l'IMC).</li>
                       <li><strong>PHASE POST-AIGÜE (> J7) :</strong> <br>Cible standard de 1,0 à 1,3 g/kg/jour (ajusté sur l'IMC).</li>
                   </ul>
@@ -432,8 +492,6 @@
             <div class="col-6">
               <label class="label-small">Cible (g/kg)</label>
               <select id="cibleProtNP" class="form-select" onchange="calculerTout()">
-                <option value="0.2">0.2 g/kg</option>
-                <option value="0.5">0.5 g/kg</option>
                 <option value="0.8">0.8 g/kg</option>
                 <option value="1.0">1.0 g/kg</option>
                 <option value="1.2">1.2 g/kg</option>
@@ -561,17 +619,56 @@
   </div>
 
   <script>
-    // --- GESTION DE L'AFFICHAGE MOBILE DES RECOMMANDATIONS ---
+    // --- GESTION AFFICHAGE ACCORDEON (MOBILE/PC) ---
     function toggleGuidelines(id) {
       const el = document.getElementById(id);
       el.classList.toggle('show');
     }
+
+    // --- GESTION AFFICHAGE PANNEAU TABLEAU NE (BUREAU) ---
+    function toggleENTable() {
+      const panel = document.getElementById('en-table-panel');
+      const wrapper = document.querySelector('.app-wrapper');
+      
+      if (panel.classList.contains('show')) {
+        panel.classList.remove('show');
+        wrapper.classList.remove('table-open');
+      } else {
+        panel.classList.add('show');
+        // Sur grand écran, décale la colonne principale vers la gauche
+        if (window.innerWidth >= 1180) {
+          wrapper.classList.add('table-open');
+        }
+      }
+    }
+
+    // Évite que la barre reste décalée si on change de taille d'écran
+    window.addEventListener('resize', () => {
+      const wrapper = document.querySelector('.app-wrapper');
+      if (window.innerWidth < 1180) {
+        wrapper.classList.remove('table-open');
+      } else {
+        const panel = document.getElementById('en-table-panel');
+        if (panel.classList.contains('show') && document.getElementById('enteral').classList.contains('active')) {
+          wrapper.classList.add('table-open');
+        }
+      }
+    });
 
     function switchTab(tabId) {
       document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.ios-floating-bar .nav-link').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       document.getElementById(tabId + '-tab').classList.add('active');
+      
+      // Gérer le centrage si le tableau est ouvert
+      const wrapper = document.querySelector('.app-wrapper');
+      const panel = document.getElementById('en-table-panel');
+      if (tabId === 'enteral' && panel.classList.contains('show') && window.innerWidth >= 1180) {
+          wrapper.classList.add('table-open');
+      } else {
+          wrapper.classList.remove('table-open');
+      }
     }
 
     const pochesDB = {
