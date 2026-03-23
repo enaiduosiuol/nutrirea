@@ -22,6 +22,7 @@
       font-family: '-apple-system', 'SF Pro Display', 'SF Pro Text', sans-serif; 
       padding-bottom: calc(120px + env(safe-area-inset-bottom)); 
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden; /* Empêche le scroll horizontal indésirable */
     }
 
     .app-wrapper {
@@ -29,6 +30,7 @@
       margin: 0 auto; 
       background-color: #f2f2f7;
       position: relative;
+      transition: margin 0.3s ease;
     }
     
     .ios-header { 
@@ -103,10 +105,25 @@
       background-color: #e5e5ea !important; 
     }
 
-    @media (min-width: 1080px) {
+    /* Le point de bascule est 1180px pour laisser de la place aux 3 blocs */
+    @media (min-width: 1180px) {
+      .app-wrapper {
+        /* Décale la colonne principale vers la gauche pour centrer l'ensemble des 3 blocs (440 + 20 + 340 + 20 + 340 = 1160px) */
+        margin-left: calc(50% - 580px); 
+      }
       .desktop-guidelines, .desktop-guidelines-prot {
-        display: block; position: absolute; top: 0; width: 340px; height: 100%; 
-        border-radius: 24px; padding: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); z-index: 100; overflow-y: auto;
+        display: block; 
+        position: absolute; 
+        top: 0; 
+        bottom: 0; /* Force la hauteur exacte du rectangle parent */
+        height: 100%; 
+        width: 340px; 
+        border-radius: 24px; 
+        padding: 20px; 
+        box-shadow: 0 8px 24px rgba(0,0,0,0.06); 
+        z-index: 100; 
+        overflow-y: auto;
+        box-sizing: border-box;
       }
       .desktop-guidelines { left: calc(100% + 20px); }
       .desktop-guidelines-prot { left: calc(100% + 20px + 340px + 20px); }
@@ -126,7 +143,16 @@
       background-color: rgba(255, 255, 255, 0.90); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
       border-radius: 40px; display: flex; justify-content: space-around; align-items: center; padding: 10px;
       z-index: 1000; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
+      transition: left 0.3s ease;
     }
+    
+    @media (min-width: 1180px) {
+      .ios-floating-bar {
+        /* Aligne la barre flottante avec la colonne principale décalée */
+        left: calc(50% - 360px); 
+      }
+    }
+
     .ios-floating-bar .nav-item { flex: 1; display: flex; justify-content: center; }
     .ios-floating-bar .nav-link {
       border: none !important; background: transparent !important; color: #8e8e93; font-size: 0.65rem; 
@@ -184,45 +210,40 @@
       
       <div class="tab-pane active" id="enteral" role="tabpanel">
         
-        <div class="desktop-guidelines no-print">
-          <div class="section-title" style="margin-top: 0; margin-bottom: 12px;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-            Directives Caloriques SRLF 2025
-          </div>
-          <div class="guide-text">
-            <strong style="color: #000000;">Apports Caloriques (Adultes) :</strong>
-            <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 14px;">
-              <li><strong>PHASE AIGÜE (J1 à J7) :</strong> <br>Apport restrictif : 6 à 8 kcal/kg/jour.</li>
-              <li><strong>PHASE POST-AIGÜE (> J7) :</strong> <br>Cible standard : 20 à 30 kcal/kg/jour.</li>
-            </ul>
-            <strong style="color: #000000;">Hypophosphatémie (< 0,65 mmol/L) :</strong>
-            <ul style="padding-left: 20px; margin-top: 6px;">
-              <li>Réduire apport à <strong>20 kcal/h</strong> pendant 48h, puis réaugmentation progressive.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="desktop-guidelines-prot no-print">
-          <div class="section-title" style="margin-top: 0; margin-bottom: 12px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-              Directives Protéiques SRLF 2025
-          </div>
-          <div class="guide-text">
-              <strong style="color: #000000;">Recommandations SRLF 2025 :</strong>
-              <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 14px;">
-                  <li><strong>Target Standard Visée :</strong> <br>1,3 à 1,5 g/kg/jour (ABW/IBW).</li>
-                  <li><strong>Démarrage :</strong> Apport précoce conseillé (J1-J3).</li>
-                  <li><strong>Progression :</strong> Cible recommandée atteinte idéalement avant J4 à J7.</li>
-              </ul>
-              <strong style="color: #000000;">Cas Particuliers (Surpoids) :</strong>
-              <ul style="padding-left: 20px; margin-top: 6px;">
-                  <li><strong>IMC > 25 :</strong> Cible de 1.3g/kg/j (Poids Ajusté).</li>
-                  <li><strong>IMC > 30 :</strong> Cible > 2g/kg/j (Poids Idéal).</li>
-              </ul>
-          </div>
-        </div>
-
         <div class="ios-card relative-card">
+          <div class="desktop-guidelines no-print">
+            <div class="section-title" style="margin-top: 0; margin-bottom: 12px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              Directives Caloriques SRLF 2025
+            </div>
+            <div class="guide-text">
+              <strong style="color: #000000;">Apports Caloriques (Adultes) :</strong>
+              <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 14px;">
+                <li><strong>PHASE AIGÜE (J1 à J7) :</strong> <br>Apport restrictif de 6 à 8 kcal/kg/jour <span style="font-size: 0.65rem; color: #8e8e93;"></span>.</li>
+                <li><strong>PHASE POST-AIGÜE (> J7) :</strong> <br>Cible standard de 20 à 30 kcal/kg/jour <span style="font-size: 0.65rem; color: #8e8e93;"></span>.</li>
+              </ul>
+              <strong style="color: #000000;">Hypophosphatémie (< 0,65 mmol/L) :</strong>
+              <ul style="padding-left: 20px; margin-top: 6px;">
+                <li>Réduire l'apport à <strong>20 kcal/h</strong> (480 kcal/j) pendant 48h <span style="font-size: 0.65rem; color: #8e8e93;"></span>.</li>
+                <li>Augmenter ensuite progressivement <span style="font-size: 0.65rem; color: #8e8e93;"></span>.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="desktop-guidelines-prot no-print">
+            <div class="section-title" style="margin-top: 0; margin-bottom: 12px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                Directives Protéiques SRLF 2025
+            </div>
+            <div class="guide-text">
+                <strong style="color: #000000;">Apports Protéiques (Adultes) :</strong>
+                <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 14px;">
+                    <li><strong>PHASE AIGÜE (J1 à J7) :</strong> <br>Apport faible de 0,2 à 0,9 g/kg/jour (ajusté sur l'IMC) <span style="font-size: 0.65rem; color: #8e8e93;"></span>.</li>
+                    <li><strong>PHASE POST-AIGÜE (> J7) :</strong> <br>Cible standard de 1,0 à 1,3 g/kg/jour (ajusté sur l'IMC) <span style="font-size: 0.65rem; color: #8e8e93;"></span>.</li>
+                </ul>
+            </div>
+          </div>
+
           <div class="section-title">Paramètres NE</div>
           <div class="row g-3 mb-3">
             <div class="col-6">
@@ -328,45 +349,40 @@
 
       <div class="tab-pane" id="parenteral" role="tabpanel">
         
-        <div class="desktop-guidelines no-print">
-          <div class="section-title" style="margin-top: 0; margin-bottom: 12px;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-            Directives Caloriques SRLF 2025
-          </div>
-          <div class="guide-text">
-            <strong style="color: #000000;">Apports Caloriques (Adultes) :</strong>
-            <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 14px;">
-              <li><strong>PHASE AIGÜE (J1 à J7) :</strong> <br>Apport restrictif : 6 à 8 kcal/kg/jour.</li>
-              <li><strong>PHASE POST-AIGÜE (> J7) :</strong> <br>Cible standard : 20 à 30 kcal/kg/jour.</li>
-            </ul>
-            <strong style="color: #000000;">Hypophosphatémie (< 0,65 mmol/L) :</strong>
-            <ul style="padding-left: 20px; margin-top: 6px;">
-              <li>Réduire apport à <strong>20 kcal/h</strong> pendant 48h, puis réaugmentation progressive.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="desktop-guidelines-prot no-print">
-          <div class="section-title" style="margin-top: 0; margin-bottom: 12px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-              Directives Protéiques SRLF 2025
-          </div>
-          <div class="guide-text">
-              <strong style="color: #000000;">Recommandations SRLF 2025 :</strong>
-              <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 14px;">
-                  <li><strong>Target Standard Visée :</strong> <br>1,3 à 1,5 g/kg/jour (ABW/IBW).</li>
-                  <li><strong>Démarrage :</strong> Apport précoce conseillé (J1-J3).</li>
-                  <li><strong>Progression :</strong> Cible recommandée atteinte idéalement avant J4 à J7.</li>
-              </ul>
-              <strong style="color: #000000;">Cas Particuliers (Surpoids) :</strong>
-              <ul style="padding-left: 20px; margin-top: 6px;">
-                  <li><strong>IMC > 25 :</strong> Cible de 1.3g/kg/j (Poids Ajusté).</li>
-                  <li><strong>IMC > 30 :</strong> Cible > 2g/kg/j (Poids Idéal).</li>
-              </ul>
-          </div>
-        </div>
-
         <div class="ios-card relative-card">
+          <div class="desktop-guidelines no-print">
+            <div class="section-title" style="margin-top: 0; margin-bottom: 12px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              Directives Caloriques SRLF 2025
+            </div>
+            <div class="guide-text">
+              <strong style="color: #000000;">Apports Caloriques (Adultes) :</strong>
+              <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 14px;">
+                <li><strong>PHASE AIGÜE (J1 à J7) :</strong> <br>Apport restrictif de 6 à 8 kcal/kg/jour <span style="font-size: 0.65rem; color: #8e8e93;"></span>.</li>
+                <li><strong>PHASE POST-AIGÜE (> J7) :</strong> <br>Cible standard de 20 à 30 kcal/kg/jour <span style="font-size: 0.65rem; color: #8e8e93;"></span>.</li>
+              </ul>
+              <strong style="color: #000000;">Hypophosphatémie (< 0,65 mmol/L) :</strong>
+              <ul style="padding-left: 20px; margin-top: 6px;">
+                <li>Réduire l'apport à <strong>20 kcal/h</strong> (480 kcal/j) pendant 48h <span style="font-size: 0.65rem; color: #8e8e93;"></span>.</li>
+                <li>Augmenter ensuite progressivement <span style="font-size: 0.65rem; color: #8e8e93;"></span>.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="desktop-guidelines-prot no-print">
+            <div class="section-title" style="margin-top: 0; margin-bottom: 12px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                Directives Protéiques SRLF 2025
+            </div>
+            <div class="guide-text">
+                <strong style="color: #000000;">Apports Protéiques (Adultes) :</strong>
+                <ul style="padding-left: 20px; margin-top: 6px; margin-bottom: 14px;">
+                    <li><strong>PHASE AIGÜE (J1 à J7) :</strong> <br>Apport faible de 0,2 à 0,9 g/kg/jour (ajusté sur l'IMC) <span style="font-size: 0.65rem; color: #8e8e93;"></span>.</li>
+                    <li><strong>PHASE POST-AIGÜE (> J7) :</strong> <br>Cible standard de 1,0 à 1,3 g/kg/jour (ajusté sur l'IMC) <span style="font-size: 0.65rem; color: #8e8e93;"></span>.</li>
+                </ul>
+            </div>
+          </div>
+
           <div class="section-title">Paramètres NP</div>
           <div class="row g-3">
             <div class="col-6">
