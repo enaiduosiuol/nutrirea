@@ -632,10 +632,19 @@
       let pi = (tailleCm - 100) - ((tailleCm - 150) / 4); 
       const pa = pi + 0.25 * (poidsReel - pi);
 
+      // --- NOUVELLE LOGIQUE DE CHOIX DU POIDS DE REFERENCE (CALORIES & PROTEINES) ---
       let poidsRefKcal, poidsRefProt;
-      if (imc < 30) { poidsRefKcal = (imc > 25) ? pa : poidsReel; poidsRefProt = poidsReel; } 
-      else if (imc >= 30 && imc <= 50) { poidsRefKcal = pa; poidsRefProt = pi; } 
-      else { poidsRefKcal = pi; poidsRefProt = pi; }
+      if (imc < 30) { 
+        poidsRefKcal = poidsReel; 
+        poidsRefProt = poidsReel; 
+      } else if (imc >= 30 && imc <= 40) { 
+        poidsRefKcal = pa; 
+        poidsRefProt = pa; 
+      } else { 
+        // IMC > 40
+        poidsRefKcal = pi; 
+        poidsRefProt = pi; 
+      }
 
       document.getElementById('resIMC').innerText = imc.toFixed(1);
       document.getElementById('resPI').innerText = pi.toFixed(1);
@@ -668,10 +677,19 @@
         const imc = (tailleCm > 0) ? (poidsReel / Math.pow(tailleCm/100, 2)) : 0;
         let pi = (tailleCm - 100) - ((tailleCm - 150) / 4);
         const pa = pi + 0.25 * (poidsReel - pi);
+        
+        // --- NOUVELLE LOGIQUE DE CHOIX DU POIDS DE REFERENCE ---
         let poidsRefKcal, poidsRefProt;
-        if (imc < 30) { poidsRefKcal = (imc > 25) ? pa : poidsReel; poidsRefProt = poidsReel; }
-        else if (imc >= 30 && imc <= 50) { poidsRefKcal = pa; poidsRefProt = pi; }
-        else { poidsRefKcal = pi; poidsRefProt = pi; }
+        if (imc < 30) { 
+          poidsRefKcal = poidsReel; 
+          poidsRefProt = poidsReel; 
+        } else if (imc >= 30 && imc <= 40) { 
+          poidsRefKcal = pa; 
+          poidsRefProt = pa; 
+        } else { 
+          poidsRefKcal = pi; 
+          poidsRefProt = pi; 
+        }
 
         const targetKcalNE = parseFloat(document.getElementById('phaseNE').value);
         const targetProtNE = parseFloat(document.getElementById('cibleProtNE').value);
@@ -691,7 +709,7 @@
         const debit = volumeSlider / 24;
         const kcalApportNE = volumeSlider * enConc;
         
-        // CORRECTION: Utilisation directe de protApportNE pour l'entérale
+        // CORRECTION BUG PROTIFAR: On utilise bien protApportNE pour l'entérale
         const protApportNE = (volumeSlider / 1000) * enProtL;
         const totalKcal = kcalApportNE + kcalCachéesNE;
         const deficitProt = Math.max(0, cibleProtTotal_NE - protApportNE);
@@ -710,7 +728,6 @@
         document.getElementById('targetProtNE_Display').innerText = cibleProtTotal_NE.toFixed(1);
         document.getElementById('totalProvidedProtNE_Display').innerText = protApportNE.toFixed(1);
         
-        // CORRECTION: pctProt se base sur protApportNE
         let pctProt = (cibleProtTotal_NE > 0) ? (protApportNE / cibleProtTotal_NE) * 100 : 0;
         document.getElementById('barProtNE').style.width = Math.min(pctProt, 100) + "%";
 
@@ -725,10 +742,19 @@
         const imc = (tailleCm > 0) ? (poidsReel / Math.pow(tailleCm/100, 2)) : 0;
         let pi = (tailleCm - 100) - ((tailleCm - 150) / 4);
         const pa = pi + 0.25 * (poidsReel - pi);
+        
+        // --- NOUVELLE LOGIQUE DE CHOIX DU POIDS DE REFERENCE ---
         let poidsRefKcal, poidsRefProt;
-        if (imc < 30) { poidsRefKcal = (imc > 25) ? pa : poidsReel; poidsRefProt = poidsReel; }
-        else if (imc >= 30 && imc <= 50) { poidsRefKcal = pa; poidsRefProt = pi; }
-        else { poidsRefKcal = pi; poidsRefProt = pi; }
+        if (imc < 30) { 
+          poidsRefKcal = poidsReel; 
+          poidsRefProt = poidsReel; 
+        } else if (imc >= 30 && imc <= 40) { 
+          poidsRefKcal = pa; 
+          poidsRefProt = pa; 
+        } else { 
+          poidsRefKcal = pi; 
+          poidsRefProt = pi; 
+        }
 
         const targetKcalNP = parseFloat(document.getElementById('phaseNP').value);
         const targetProtNP = parseFloat(document.getElementById('cibleProtNP').value);
