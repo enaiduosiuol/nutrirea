@@ -17,14 +17,13 @@
     /* STYLE GLOBAL (LIGHT MODE iOS)             */
     /* ========================================= */
     body { 
-      background-color: #f2f2f7; /* Gris perle Apple pour le fond */
+      background-color: #f2f2f7; 
       color: #000000;
       font-family: '-apple-system', 'SF Pro Display', 'SF Pro Text', sans-serif; 
       padding-bottom: calc(120px + env(safe-area-inset-bottom)); 
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Wrapper pour restreindre et centrer l'app sur PC/Mac */
     .app-wrapper {
       max-width: 440px; 
       margin: 0 auto; 
@@ -32,7 +31,6 @@
       position: relative;
     }
     
-    /* EN-TÊTE */
     .ios-header { 
       padding: calc(20px + env(safe-area-inset-top)) 20px 10px 20px; 
       display: flex; justify-content: space-between; align-items: flex-end;
@@ -45,9 +43,6 @@
     }
     .btn-reset:active { background: #d1d1d6; }
     
-    /* ========================================= */
-    /* CARTES (RECTANGLES) AVEC OMBRES           */
-    /* ========================================= */
     .ios-card { 
       background-color: #ffffff; 
       border-radius: 24px; 
@@ -56,12 +51,8 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.06);
     }
     
-    /* Permet d'accrocher le panneau SRLF sur le côté */
-    .relative-card {
-      position: relative;
-    }
+    .relative-card { position: relative; }
     
-    /* Dégradés pastel pour les résultats en mode clair */
     .card-gradient-ne { background: linear-gradient(145deg, #f0f8ff 0%, #e5f0ff 100%); border: 1px solid rgba(10, 132, 255, 0.1); }
     .card-gradient-np { background: linear-gradient(145deg, #f0fdf4 0%, #e4f8e9 100%); border: 1px solid rgba(48, 209, 88, 0.1); }
     .card-gradient-warn { background: linear-gradient(145deg, #fffaf0 0%, #fff4e5 100%); border: 1px solid rgba(255, 159, 10, 0.1); }
@@ -69,7 +60,6 @@
     .section-title { font-size: 1.1rem; font-weight: 700; color: #000000; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
     .section-title svg { color: #8e8e93; }
 
-    /* FORMULAIRES */
     .form-control, .form-select { 
       background-color: #f2f2f7 !important; color: #000000 !important; border: none !important; 
       border-radius: 12px !important; min-height: 44px; font-size: 16px; font-weight: 500;
@@ -99,49 +89,20 @@
     .bg-success-ios { background-color: #34c759 !important; }
     input[type=range] { accent-color: #007aff; width: 100%; cursor: pointer;}
 
-    /* ========================================= */
-    /* PANNEAU GUIDELINES (BUREAU UNIQUEMENT)    */
-    /* ========================================= */
-    .desktop-guidelines {
-      display: none; /* Caché sur mobile */
-    }
-
+    .desktop-guidelines { display: none; }
     @media (min-width: 1080px) {
       .desktop-guidelines {
-        display: block;
-        position: absolute;
-        left: calc(100% + 20px);
-        top: 0;
-        width: 340px;
-        background-color: #ffffff;
-        border-radius: 24px;
-        padding: 20px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-        z-index: 100;
+        display: block; position: absolute; left: calc(100% + 20px); top: 0; width: 340px;
+        background-color: #ffffff; border-radius: 24px; padding: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); z-index: 100;
       }
-      .desktop-guidelines .guide-text {
-        font-size: 0.85rem;
-        color: #3a3a3c;
-        line-height: 1.4;
-      }
-      .desktop-guidelines ul {
-        margin-bottom: 0;
-      }
-      .desktop-guidelines li {
-        margin-bottom: 6px;
-      }
+      .desktop-guidelines .guide-text { font-size: 0.85rem; color: #3a3a3c; line-height: 1.4; }
+      .desktop-guidelines ul { margin-bottom: 0; }
+      .desktop-guidelines li { margin-bottom: 6px; }
     }
 
-    /* ========================================= */
-    /* BARRE FLOTTANTE iOS                       */
-    /* ========================================= */
     .ios-floating-bar {
-      position: fixed; 
-      bottom: calc(15px + env(safe-area-inset-bottom)); 
-      left: 50%; 
-      transform: translateX(-50%); 
-      width: calc(100% - 40px); 
-      max-width: 400px; 
+      position: fixed; bottom: calc(15px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); 
+      width: calc(100% - 40px); max-width: 400px; 
       background-color: rgba(255, 255, 255, 0.90); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
       border-radius: 40px; display: flex; justify-content: space-around; align-items: center; padding: 10px;
       z-index: 1000; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
@@ -151,15 +112,12 @@
       border: none !important; background: transparent !important; color: #8e8e93; font-size: 0.65rem; 
       font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0;
     }
-    
     .ios-floating-bar .icon-wrapper {
       width: 60px; height: 36px; display: flex; align-items: center; justify-content: center;
       border-radius: 18px; transition: all 0.2s ease; color: #8e8e93; 
     }
-    
     .ios-floating-bar .nav-link.active { color: #007aff; font-weight: 700; }
     .ios-floating-bar .nav-link.active .icon-wrapper { background-color: #007aff; color: #ffffff; }
-    
     .ios-floating-bar svg { width: 22px; height: 22px; }
 
     .tab-pane { display: none; }
@@ -230,9 +188,13 @@
             <div class="col-6">
               <label class="label-small">Cible (kcal/kg)</label>
               <select id="phaseNE" class="form-select" onchange="calculerTout()">
+                <option value="5">5 kcal/kg</option>
+                <option value="10">10 kcal/kg</option>
+                <option value="15">15 kcal/kg</option>
                 <option value="20">20 kcal/kg</option>
                 <option value="25" selected>25 kcal/kg</option>
                 <option value="30">30 kcal/kg</option>
+                <option value="35">35 kcal/kg</option>
               </select>
             </div>
             <div class="col-6">
@@ -353,9 +315,13 @@
             <div class="col-6">
               <label class="label-small">Cible (kcal/kg)</label>
               <select id="phaseNP" class="form-select" onchange="calculerTout()">
+                <option value="5">5 kcal/kg</option>
+                <option value="10">10 kcal/kg</option>
+                <option value="15">15 kcal/kg</option>
                 <option value="20">20 kcal/kg</option>
                 <option value="25" selected>25 kcal/kg</option>
                 <option value="30">30 kcal/kg</option>
+                <option value="35">35 kcal/kg</option>
               </select>
             </div>
             <div class="col-6">
@@ -639,6 +605,8 @@
 
         const debit = volumeSlider / 24;
         const kcalApportNE = volumeSlider * enConc;
+        
+        // CORRECTION DU BUG PROTIFAR: On utilise bien protApportNE pour l'entérale !
         const protApportNE = (volumeSlider / 1000) * enProtL;
         const totalKcal = kcalApportNE + kcalCachéesNE;
         const deficitProt = Math.max(0, cibleProtTotal_NE - protApportNE);
@@ -656,7 +624,9 @@
 
         document.getElementById('targetProtNE_Display').innerText = cibleProtTotal_NE.toFixed(1);
         document.getElementById('totalProvidedProtNE_Display').innerText = protApportNE.toFixed(1);
-        let pctProt = (cibleProtTotal_NE > 0) ? (protApportPoche / cibleProtTotal_NE) * 100 : 0;
+        
+        // CORRECTION: Utilisation de protApportNE au lieu de protApportPoche
+        let pctProt = (cibleProtTotal_NE > 0) ? (protApportNE / cibleProtTotal_NE) * 100 : 0;
         document.getElementById('barProtNE').style.width = Math.min(pctProt, 100) + "%";
 
         document.getElementById('resProtifar').innerText = Math.max(0, cuilleresProtifar).toFixed(1);
