@@ -53,7 +53,7 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.06);
     }
     
-    .tab-pane { position: relative; } /* Pour ancrer le panneau latéral */
+    .tab-pane { position: relative; }
     
     .card-gradient-ne { background: linear-gradient(145deg, #f0f8ff 0%, #e5f0ff 100%); border: 1px solid rgba(10, 132, 255, 0.1); }
     .card-gradient-np { background: linear-gradient(145deg, #f0fdf4 0%, #e4f8e9 100%); border: 1px solid rgba(48, 209, 88, 0.1); }
@@ -75,10 +75,7 @@
     .anthro-val { font-size: 1.1rem; font-weight: 700; color: #0a84ff; display: block; margin-top: 4px; }
     .anthro-label { font-size: 0.65rem; color: #8e8e93; font-weight: 600; text-transform: uppercase; }
 
-    .active-weight-box {
-      box-shadow: 0 0 0 2px #ff3b30 inset !important; 
-      background-color: #fff0f0 !important;
-    }
+    .active-weight-box { box-shadow: 0 0 0 2px #ff3b30 inset !important; background-color: #fff0f0 !important; }
 
     .highlight-value { font-size: 2.5rem; font-weight: 800; line-height: 1; margin: 10px 0; }
     .highlight-unit { font-size: 1rem; font-weight: 600; color: #8e8e93; }
@@ -91,11 +88,34 @@
     .carac-label { display: block; font-size: 0.7rem; color: #8e8e93; font-weight: 600; margin-bottom: 2px; }
     .carac-val { font-weight: 800; color: #000000; font-size: 1rem; }
 
-    .progress { background-color: #e5e5ea; border-radius: 8px; height: 10px; overflow: hidden; }
+    /* ========================================= */
+    /* BARRES DE PROGRESSION AVEC CIBLE (REPÈRE) */
+    /* ========================================= */
+    .progress { 
+      background-color: #e5e5ea; 
+      border-radius: 8px; 
+      height: 10px; 
+      overflow: visible; /* Permet au repère de dépasser légèrement */
+      position: relative;
+    }
     .progress-bar { border-radius: 8px; transition: width 0.4s ease; }
     .bg-primary-ios { background-color: #007aff !important; }
     .bg-success-ios { background-color: #34c759 !important; }
     input[type=range] { accent-color: #007aff; width: 100%; cursor: pointer;}
+
+    /* Le petit trait vertical de cible */
+    .target-marker {
+      position: absolute;
+      top: -3px;
+      bottom: -3px;
+      width: 4px;
+      margin-left: -2px; /* Pour centrer le trait exactement sur la ligne des 80% */
+      background-color: #1c1c1e;
+      left: 80%; /* La cible mathématique est fixée à 80% de la largeur du conteneur */
+      border-radius: 2px;
+      z-index: 10;
+      box-shadow: 0 0 0 2px #ffffff; /* Petit halo blanc pour bien le détacher de la barre de couleur */
+    }
 
     /* ========================================= */
     /* COMMENTAIRES (DÉROULANTS PARTOUT)         */
@@ -123,13 +143,15 @@
     /* Sur grand écran */
     @media (min-width: 1180px) {
       .app-wrapper.table-open {
-        margin-left: calc(50% - 470px); /* Décale vers la gauche pour centrer l'ensemble */
+        margin-left: calc(50% - 470px); /* Décale vers la gauche */
       }
       .side-table-panel {
         position: absolute;
-        top: 0; bottom: 0;
+        top: 0; 
         left: calc(100% + 20px);
-        width: 480px; /* Panneau large pour le tableau */
+        width: 480px; 
+        height: fit-content; /* MODIFICATION : La hauteur s'adapte au contenu */
+        max-height: 100%; /* S'assure qu'il ne dépasse pas le rectangle principal s'il y a trop de texte */
         border-radius: 24px;
         padding: 20px;
         box-shadow: 0 8px 24px rgba(0,0,0,0.06);
@@ -147,7 +169,6 @@
       }
     }
 
-    /* Style du tableau HTML */
     .custom-table th { background-color: #f2f2f7; color: #8e8e93; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; border-bottom: none; }
     .custom-table td { font-size: 0.8rem; vertical-align: middle; border-color: #e5e5ea; }
     .custom-table .prod-name { font-weight: 700; color: #000; font-size: 0.85rem; }
@@ -273,6 +294,7 @@
             <strong style="color: #000;">Note :</strong> Ces valeurs correspondent à la composition pour <strong>1000 mL</strong> de produit. Veillez à toujours vérifier l'étiquette exacte du produit utilisé dans votre service.
           </div>
         </div>
+
         <div class="ios-card">
           <div class="section-title" style="justify-content: space-between; width: 100%;">
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -409,7 +431,9 @@
               </div>
               <div class="text-end" style="font-size:0.7rem; color:#ff3b30;">Cachées: <span id="resCachéesNE_Synth">0</span></div>
             </div>
-            <div class="progress"><div class="progress-bar bg-primary-ios" id="barKcalNE" style="width: 0%"></div></div>
+            <div class="progress">
+              <div class="progress-bar bg-primary-ios" id="barKcalNE" style="width: 0%"></div>
+              <div class="target-marker"></div> </div>
           </div>
           <div>
             <div class="d-flex justify-content-between align-items-end mb-2">
@@ -418,7 +442,9 @@
                 <span class="text-success-ios fw-bold fs-5" id="totalProvidedProtNE_Display">0</span> <span style="font-size:0.8rem; color:#8e8e93;">/ <span id="targetProtNE_Display">0</span> g</span>
               </div>
             </div>
-            <div class="progress"><div class="progress-bar bg-success-ios" id="barProtNE" style="width: 0%"></div></div>
+            <div class="progress">
+              <div class="progress-bar bg-success-ios" id="barProtNE" style="width: 0%"></div>
+              <div class="target-marker"></div> </div>
           </div>
         </div>
 
@@ -492,6 +518,8 @@
             <div class="col-6">
               <label class="label-small">Cible (g/kg)</label>
               <select id="cibleProtNP" class="form-select" onchange="calculerTout()">
+                <option value="0.2">0.2 g/kg</option>
+                <option value="0.5">0.5 g/kg</option>
                 <option value="0.8">0.8 g/kg</option>
                 <option value="1.0">1.0 g/kg</option>
                 <option value="1.2">1.2 g/kg</option>
@@ -580,7 +608,10 @@
               </div>
               <div class="text-end" style="font-size:0.7rem; color:#ff3b30;">Cachées: <span id="resCachéesNP_Synth">0</span></div>
             </div>
-            <div class="progress"><div class="progress-bar bg-primary-ios" id="barKcalNP" style="width: 0%"></div></div>
+            <div class="progress">
+              <div class="progress-bar bg-primary-ios" id="barKcalNP" style="width: 0%"></div>
+              <div class="target-marker"></div>
+            </div>
           </div>
           <div>
             <div class="d-flex justify-content-between align-items-end mb-2">
@@ -589,7 +620,10 @@
                 <span class="text-success-ios fw-bold fs-5" id="totalProvidedProtNP_Display">0</span> <span style="font-size:0.8rem; color:#8e8e93;">/ <span id="targetProtNP_Display">0</span> g</span>
               </div>
             </div>
-            <div class="progress"><div class="progress-bar bg-success-ios" id="barProtNP" style="width: 0%"></div></div>
+            <div class="progress">
+              <div class="progress-bar bg-success-ios" id="barProtNP" style="width: 0%"></div>
+              <div class="target-marker"></div>
+            </div>
             <div class="text-center mt-3 fw-bold" style="font-size: 0.85rem; color:#ff9f0a;" id="protComment">--</div>
           </div>
         </div>
@@ -619,7 +653,7 @@
   </div>
 
   <script>
-    // --- GESTION AFFICHAGE ACCORDEON (MOBILE/PC) ---
+    // --- GESTION AFFICHAGE ACCORDEON COMMENTAIRES ---
     function toggleGuidelines(id) {
       const el = document.getElementById(id);
       el.classList.toggle('show');
@@ -635,14 +669,12 @@
         wrapper.classList.remove('table-open');
       } else {
         panel.classList.add('show');
-        // Sur grand écran, décale la colonne principale vers la gauche
         if (window.innerWidth >= 1180) {
           wrapper.classList.add('table-open');
         }
       }
     }
 
-    // Évite que la barre reste décalée si on change de taille d'écran
     window.addEventListener('resize', () => {
       const wrapper = document.querySelector('.app-wrapper');
       if (window.innerWidth < 1180) {
@@ -661,7 +693,6 @@
       document.getElementById(tabId).classList.add('active');
       document.getElementById(tabId + '-tab').classList.add('active');
       
-      // Gérer le centrage si le tableau est ouvert
       const wrapper = document.querySelector('.app-wrapper');
       const panel = document.getElementById('en-table-panel');
       if (tabId === 'enteral' && panel.classList.contains('show') && window.innerWidth >= 1180) {
@@ -850,15 +881,18 @@
         document.getElementById('totalProvidedKcalNE_Display').innerText = Math.round(totalKcal);
         document.getElementById('resCachéesNE_Synth').innerText = Math.round(kcalCachéesNE);
         
+        // La cible mathématique est fixée à 80% visuellement (pct * 0.8)
         let pctKcal = (cibleKcalTotal_NE > 0) ? (totalKcal / cibleKcalTotal_NE) * 100 : 0;
-        document.getElementById('barKcalNE').style.width = Math.min(pctKcal, 100) + "%";
+        let displayPctKcal = pctKcal * 0.8;
+        document.getElementById('barKcalNE').style.width = Math.min(displayPctKcal, 100) + "%";
         document.getElementById('barKcalNE').className = pctKcal > 110 ? "progress-bar bg-danger" : (pctKcal < 90 ? "progress-bar bg-warning" : "progress-bar bg-primary-ios");
 
         document.getElementById('targetProtNE_Display').innerText = cibleProtTotal_NE.toFixed(1);
         document.getElementById('totalProvidedProtNE_Display').innerText = protApportNE.toFixed(1);
         
         let pctProt = (cibleProtTotal_NE > 0) ? (protApportNE / cibleProtTotal_NE) * 100 : 0;
-        document.getElementById('barProtNE').style.width = Math.min(pctProt, 100) + "%";
+        let displayPctProt = pctProt * 0.8;
+        document.getElementById('barProtNE').style.width = Math.min(displayPctProt, 100) + "%";
 
         document.getElementById('resProtifar').innerText = Math.max(0, cuilleresProtifar).toFixed(1);
         document.getElementById('resDeficitProt').innerText = deficitProt.toFixed(1);
@@ -913,13 +947,16 @@
         document.getElementById('resCachéesNP_Synth').innerText = Math.round(kcalCachéesNP);
 
         let pctKcal = (cibleKcalTotal_NP > 0) ? (totalKcal / cibleKcalTotal_NP) * 100 : 0;
-        document.getElementById('barKcalNP').style.width = Math.min(pctKcal, 100) + "%";
+        let displayPctKcal = pctKcal * 0.8;
+        document.getElementById('barKcalNP').style.width = Math.min(displayPctKcal, 100) + "%";
         document.getElementById('barKcalNP').className = pctKcal > 110 ? "progress-bar bg-danger" : (pctKcal < 90 ? "progress-bar bg-warning" : "progress-bar bg-primary-ios");
 
         document.getElementById('targetProtNP_Display').innerText = cibleProtTotal_NP.toFixed(1);
         document.getElementById('totalProvidedProtNP_Display').innerText = protApportPoche.toFixed(1);
+        
         let pctProt = (cibleProtTotal_NP > 0) ? (protApportPoche / cibleProtTotal_NP) * 100 : 0;
-        document.getElementById('barProtNP').style.width = Math.min(pctProt, 100) + "%";
+        let displayPctProt = pctProt * 0.8;
+        document.getElementById('barProtNP').style.width = Math.min(displayPctProt, 100) + "%";
 
         const diffProt = protApportPoche - cibleProtTotal_NP;
         if (selectedPoche) {
