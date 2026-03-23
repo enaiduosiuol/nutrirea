@@ -51,8 +51,7 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.06);
     }
     
-    /* Required for absolute side panels to match main column height */
-    .tab-pane { position: relative; }
+    .relative-card { position: relative; }
     
     .card-gradient-ne { background: linear-gradient(145deg, #f0f8ff 0%, #e5f0ff 100%); border: 1px solid rgba(10, 132, 255, 0.1); }
     .card-gradient-np { background: linear-gradient(145deg, #f0fdf4 0%, #e4f8e9 100%); border: 1px solid rgba(48, 209, 88, 0.1); }
@@ -64,14 +63,21 @@
     .form-control, .form-select { 
       background-color: #f2f2f7 !important; color: #000000 !important; border: none !important; 
       border-radius: 12px !important; min-height: 44px; font-size: 16px; font-weight: 500;
+      transition: all 0.3s ease;
     }
     .form-control:focus, .form-select:focus { box-shadow: 0 0 0 2px #0a84ff !important; }
     .label-small { font-size: 0.8rem; font-weight: 600; color: #8e8e93; margin-bottom: 6px; display: block; }
     
     .anthro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-top: 15px; }
-    .anthro-box { background: #f2f2f7; border-radius: 12px; padding: 10px 5px; }
+    .anthro-box { background: #f2f2f7; border-radius: 12px; padding: 10px 5px; transition: all 0.3s ease; }
     .anthro-val { font-size: 1.1rem; font-weight: 700; color: #0a84ff; display: block; margin-top: 4px; }
     .anthro-label { font-size: 0.65rem; color: #8e8e93; font-weight: 600; text-transform: uppercase; }
+
+    /* NOUVEAU: Encadré rouge pour indiquer le poids utilisé */
+    .active-weight-box {
+      box-shadow: 0 0 0 2px #ff3b30 inset !important; /* Utilisation de shadow-inset au lieu de border pour ne pas décaler le design */
+      background-color: #fff0f0 !important;
+    }
 
     .highlight-value { font-size: 2.5rem; font-weight: 800; line-height: 1; margin: 10px 0; }
     .highlight-unit { font-size: 1rem; font-weight: 600; color: #8e8e93; }
@@ -100,51 +106,24 @@
 
     @media (min-width: 1080px) {
       .desktop-guidelines, .desktop-guidelines-prot {
-        display: block;
-        position: absolute;
-        top: 0;
-        width: 340px;
-        height: 100%; /* Match exactly the main rectangle height */
-        border-radius: 24px;
-        padding: 20px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-        z-index: 100;
-        overflow-y: auto; /* Handle overflow if screen is short */
+        display: block; position: absolute; top: 0; width: 340px; height: 100%; 
+        border-radius: 24px; padding: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); z-index: 100; overflow-y: auto;
       }
-      .desktop-guidelines {
-        left: calc(100% + 20px);
-      }
-      .desktop-guidelines-prot {
-        left: calc(100% + 20px + 340px + 20px); /* Position after the first guidelines panel */
-      }
+      .desktop-guidelines { left: calc(100% + 20px); }
+      .desktop-guidelines-prot { left: calc(100% + 20px + 340px + 20px); }
       
-      .desktop-guidelines .guide-text, .desktop-guidelines-prot .guide-text {
-        font-size: 0.85rem;
-        color: #505052; /* Lower contrast for dimmed effect */
-        line-height: 1.4;
-      }
-      .desktop-guidelines ul, .desktop-guidelines-prot ul {
-        margin-bottom: 0;
-      }
-      .desktop-guidelines li, .desktop-guidelines-prot li {
-        margin-bottom: 6px;
-      }
-      /* Toned down colors for titles in guidelines */
-      .desktop-guidelines .section-title, .desktop-guidelines-prot .section-title {
-          color: #004b9c !important; /* Lighter/duller blue */
-      }
+      .desktop-guidelines .guide-text, .desktop-guidelines-prot .guide-text { font-size: 0.85rem; color: #505052; line-height: 1.4; }
+      .desktop-guidelines ul, .desktop-guidelines-prot ul { margin-bottom: 0; }
+      .desktop-guidelines li, .desktop-guidelines-prot li { margin-bottom: 6px; }
+      .desktop-guidelines .section-title, .desktop-guidelines-prot .section-title { color: #004b9c !important; }
     }
 
     /* ========================================= */
     /* BARRE FLOTTANTE iOS                       */
     /* ========================================= */
     .ios-floating-bar {
-      position: fixed; 
-      bottom: calc(15px + env(safe-area-inset-bottom)); 
-      left: 50%; 
-      transform: translateX(-50%); 
-      width: calc(100% - 40px); 
-      max-width: 400px; 
+      position: fixed; bottom: calc(15px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); 
+      width: calc(100% - 40px); max-width: 400px; 
       background-color: rgba(255, 255, 255, 0.90); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
       border-radius: 40px; display: flex; justify-content: space-around; align-items: center; padding: 10px;
       z-index: 1000; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
@@ -154,15 +133,12 @@
       border: none !important; background: transparent !important; color: #8e8e93; font-size: 0.65rem; 
       font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0;
     }
-    
     .ios-floating-bar .icon-wrapper {
       width: 60px; height: 36px; display: flex; align-items: center; justify-content: center;
       border-radius: 18px; transition: all 0.2s ease; color: #8e8e93; 
     }
-    
     .ios-floating-bar .nav-link.active { color: #007aff; font-weight: 700; }
     .ios-floating-bar .nav-link.active .icon-wrapper { background-color: #007aff; color: #ffffff; }
-    
     .ios-floating-bar svg { width: 22px; height: 22px; }
 
     .tab-pane { display: none; }
@@ -200,8 +176,8 @@
       </div>
       <div class="anthro-grid">
         <div class="anthro-box"><span class="anthro-label">IMC</span><span class="anthro-val" id="resIMC">--</span></div>
-        <div class="anthro-box"><span class="anthro-label">Idéal</span><span class="anthro-val" id="resPI">--</span></div>
-        <div class="anthro-box"><span class="anthro-label">Ajusté</span><span class="anthro-val" id="resPA">--</span></div>
+        <div class="anthro-box" id="boxPI"><span class="anthro-label">Idéal</span><span class="anthro-val" id="resPI">--</span></div>
+        <div class="anthro-box" id="boxPA"><span class="anthro-label">Ajusté</span><span class="anthro-val" id="resPA">--</span></div>
       </div>
     </div>
 
@@ -632,23 +608,34 @@
       let pi = (tailleCm - 100) - ((tailleCm - 150) / 4); 
       const pa = pi + 0.25 * (poidsReel - pi);
 
-      // --- NOUVELLE LOGIQUE DE CHOIX DU POIDS DE REFERENCE (CALORIES & PROTEINES) ---
+      // --- LOGIQUE DE CHOIX DU POIDS DE REFERENCE ET AFFICHAGE CADRE ROUGE ---
       let poidsRefKcal, poidsRefProt;
-      if (imc < 30) { 
-        poidsRefKcal = poidsReel; 
-        poidsRefProt = poidsReel; 
-      } else if (imc >= 30 && imc <= 40) { 
-        poidsRefKcal = pa; 
-        poidsRefProt = pa; 
-      } else { 
-        // IMC > 40
-        poidsRefKcal = pi; 
-        poidsRefProt = pi; 
+      
+      // Réinitialiser les encadrés rouges
+      document.getElementById('poidsReel').classList.remove('active-weight-box');
+      document.getElementById('boxPA').classList.remove('active-weight-box');
+      document.getElementById('boxPI').classList.remove('active-weight-box');
+
+      if (imc > 0) {
+        if (imc < 30) { 
+          poidsRefKcal = poidsReel; 
+          poidsRefProt = poidsReel; 
+          document.getElementById('poidsReel').classList.add('active-weight-box');
+        } else if (imc >= 30 && imc <= 40) { 
+          poidsRefKcal = pa; 
+          poidsRefProt = pa; 
+          document.getElementById('boxPA').classList.add('active-weight-box');
+        } else { 
+          // IMC > 40
+          poidsRefKcal = pi; 
+          poidsRefProt = pi; 
+          document.getElementById('boxPI').classList.add('active-weight-box');
+        }
       }
 
-      document.getElementById('resIMC').innerText = imc.toFixed(1);
-      document.getElementById('resPI').innerText = pi.toFixed(1);
-      document.getElementById('resPA').innerText = pa.toFixed(1);
+      document.getElementById('resIMC').innerText = imc > 0 ? imc.toFixed(1) : '--';
+      document.getElementById('resPI').innerText = tailleCm > 0 ? pi.toFixed(1) : '--';
+      document.getElementById('resPA').innerText = (tailleCm > 0 && poidsReel > 0) ? pa.toFixed(1) : '--';
 
       if (resetSliders) {
           const propNE = parseFloat(document.getElementById('propofolDebitNE').value) || 0;
@@ -678,7 +665,6 @@
         let pi = (tailleCm - 100) - ((tailleCm - 150) / 4);
         const pa = pi + 0.25 * (poidsReel - pi);
         
-        // --- NOUVELLE LOGIQUE DE CHOIX DU POIDS DE REFERENCE ---
         let poidsRefKcal, poidsRefProt;
         if (imc < 30) { 
           poidsRefKcal = poidsReel; 
@@ -709,7 +695,6 @@
         const debit = volumeSlider / 24;
         const kcalApportNE = volumeSlider * enConc;
         
-        // CORRECTION BUG PROTIFAR: On utilise bien protApportNE pour l'entérale
         const protApportNE = (volumeSlider / 1000) * enProtL;
         const totalKcal = kcalApportNE + kcalCachéesNE;
         const deficitProt = Math.max(0, cibleProtTotal_NE - protApportNE);
@@ -743,7 +728,6 @@
         let pi = (tailleCm - 100) - ((tailleCm - 150) / 4);
         const pa = pi + 0.25 * (poidsReel - pi);
         
-        // --- NOUVELLE LOGIQUE DE CHOIX DU POIDS DE REFERENCE ---
         let poidsRefKcal, poidsRefProt;
         if (imc < 30) { 
           poidsRefKcal = poidsReel; 
