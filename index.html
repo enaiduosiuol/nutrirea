@@ -62,6 +62,7 @@
     .section-title { font-size: 1.1rem; font-weight: 700; color: #000000; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
     .section-title svg { color: #8e8e93; }
 
+    /* FORMULAIRES DE BASE */
     .form-control, .form-select { 
       background-color: #f2f2f7 !important; color: #000000 !important; border: none !important; 
       border-radius: 12px !important; min-height: 44px; font-size: 16px; font-weight: 500;
@@ -70,6 +71,27 @@
     .form-control:focus, .form-select:focus { box-shadow: 0 0 0 2px #0a84ff !important; }
     .label-small { font-size: 0.8rem; font-weight: 600; color: #8e8e93; margin-bottom: 6px; display: block; }
     
+    /* CORRECTION AFFICHAGE INPUT-GROUP (Apports Cachés) */
+    .input-group {
+      background-color: #f2f2f7;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-wrap: nowrap;
+    }
+    .input-group .form-select, 
+    .input-group .form-control {
+      background-color: transparent !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+    .input-group .form-select {
+      border-right: 1px solid #d1d1d6 !important; /* Ligne de séparation fine iOS */
+    }
+    .input-group:focus-within {
+      box-shadow: 0 0 0 2px #0a84ff !important;
+    }
+
     .anthro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-top: 15px; }
     .anthro-box { background: #f2f2f7; border-radius: 12px; padding: 10px 5px; transition: all 0.3s ease; }
     .anthro-val { font-size: 1.1rem; font-weight: 700; color: #0a84ff; display: block; margin-top: 4px; }
@@ -95,7 +117,7 @@
       background-color: #e5e5ea; 
       border-radius: 8px; 
       height: 10px; 
-      overflow: visible; /* Permet au repère de dépasser légèrement */
+      overflow: visible; 
       position: relative;
     }
     .progress-bar { border-radius: 8px; transition: width 0.4s ease; }
@@ -103,18 +125,17 @@
     .bg-success-ios { background-color: #34c759 !important; }
     input[type=range] { accent-color: #007aff; width: 100%; cursor: pointer;}
 
-    /* Le petit trait vertical de cible */
     .target-marker {
       position: absolute;
       top: -3px;
       bottom: -3px;
       width: 4px;
-      margin-left: -2px; /* Pour centrer le trait exactement sur la ligne des 80% */
+      margin-left: -2px; 
       background-color: #1c1c1e;
-      left: 80%; /* La cible mathématique est fixée à 80% de la largeur du conteneur */
+      left: 80%; 
       border-radius: 2px;
       z-index: 10;
-      box-shadow: 0 0 0 2px #ffffff; /* Petit halo blanc pour bien le détacher de la barre de couleur */
+      box-shadow: 0 0 0 2px #ffffff;
     }
 
     /* ========================================= */
@@ -143,15 +164,15 @@
     /* Sur grand écran */
     @media (min-width: 1180px) {
       .app-wrapper.table-open {
-        margin-left: calc(50% - 470px); /* Décale vers la gauche */
+        margin-left: calc(50% - 470px); 
       }
       .side-table-panel {
         position: absolute;
         top: 0; 
         left: calc(100% + 20px);
         width: 480px; 
-        height: fit-content; /* MODIFICATION : La hauteur s'adapte au contenu */
-        max-height: 100%; /* S'assure qu'il ne dépasse pas le rectangle principal s'il y a trop de texte */
+        height: fit-content; 
+        max-height: 100%; 
         border-radius: 24px;
         padding: 20px;
         box-shadow: 0 8px 24px rgba(0,0,0,0.06);
@@ -433,7 +454,8 @@
             </div>
             <div class="progress">
               <div class="progress-bar bg-primary-ios" id="barKcalNE" style="width: 0%"></div>
-              <div class="target-marker"></div> </div>
+              <div class="target-marker"></div>
+            </div>
           </div>
           <div>
             <div class="d-flex justify-content-between align-items-end mb-2">
@@ -444,7 +466,8 @@
             </div>
             <div class="progress">
               <div class="progress-bar bg-success-ios" id="barProtNE" style="width: 0%"></div>
-              <div class="target-marker"></div> </div>
+              <div class="target-marker"></div>
+            </div>
           </div>
         </div>
 
@@ -881,7 +904,6 @@
         document.getElementById('totalProvidedKcalNE_Display').innerText = Math.round(totalKcal);
         document.getElementById('resCachéesNE_Synth').innerText = Math.round(kcalCachéesNE);
         
-        // La cible mathématique est fixée à 80% visuellement (pct * 0.8)
         let pctKcal = (cibleKcalTotal_NE > 0) ? (totalKcal / cibleKcalTotal_NE) * 100 : 0;
         let displayPctKcal = pctKcal * 0.8;
         document.getElementById('barKcalNE').style.width = Math.min(displayPctKcal, 100) + "%";
@@ -953,7 +975,6 @@
 
         document.getElementById('targetProtNP_Display').innerText = cibleProtTotal_NP.toFixed(1);
         document.getElementById('totalProvidedProtNP_Display').innerText = protApportPoche.toFixed(1);
-        
         let pctProt = (cibleProtTotal_NP > 0) ? (protApportPoche / cibleProtTotal_NP) * 100 : 0;
         let displayPctProt = pctProt * 0.8;
         document.getElementById('barProtNP').style.width = Math.min(displayPctProt, 100) + "%";
